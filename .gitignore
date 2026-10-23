@@ -1,25 +1,37 @@
-﻿# 本地备份、导出文件与旧版本打包
+# 本地备份、导出文件与旧版本打包：不要提交到公开仓库
 *.zip
 _archive/
 *.pdf
-*.bak
-*.backup
 archaea-*.json
 archaea-备份*.json
-*backup*.json
-*notes*.json
-*annotation*.json
 
-# 凭据
-.env
-.env.*
-*.key
-*.pem
-*.p12
-
-# 工具与缓存
-node_modules/
+# 系统 / 编辑器 / Python 缓存
 __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Credentials, personal documents and local model files
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.docx
+*.doc
+*.gguf
+*.safetensors
+models/
+backups/
+private-notes/
+archaea-probe.html
+
+# Preserve existing deployment privacy rules
+*.bak
+*.backup
+*backup*.json
+*notes*.json
+*annotation*.json
+*.p12
+node_modules/
