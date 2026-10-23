@@ -147,3 +147,7 @@
 .pdf-page-marker{margin:18px 0 6px;font-size:10px;letter-spacing:.12em;color:var(--copper);font-weight:700;border-top:1px solid var(--line);padding-top:10px}
 .pdf-page-marker:first-child{margin-top:0;border-top:0;padding-top:0}
 .pdf-textbar{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#f7f4ec;border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin:8px 0;font-size:11px;color:var(--muted)}
+.import-file{margin:0 0 4px;font-size:11px;color:var(--muted)}
+.import-note{font-size:10px;color:var(--muted);line-height:1.6;margin:12px 0 0}
+.drop-hint{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(246,243,236,.92);border:3px dashed var(--sea);color:var(--sea-dark);font-size:20px;font-weight:700;pointer-events:none}
+body.dropping .drop-hint{display:flex}

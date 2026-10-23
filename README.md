@@ -1,6 +1,6 @@
 # ARCHAEA · 古DNA与生物考古文献阅读台
 
-这是一个可以直接打开的 **local-first 文献阅读台 MVP**，参照「边界之外」的暖白、低饱和蓝铜色视觉风格。v0.2 增加了返回「边界之外」的站点桥接入口；v0.3 增加整段翻译与词表；v0.4 增加原文分段与 PDF 页码批注；v0.5 合并为「原文对照阅读」：PDF 自动分页/分栏/分段、逐段译文与词汇、内联批注，扫描版自动 OCR。
+这是一个可以直接打开的 **local-first 文献阅读台 MVP**，参照「边界之外」的暖白、低饱和蓝铜色视觉风格。v0.2 增加返回「边界之外」的入口；v0.3 增加整段翻译与词表；v0.4 增加原文分段与 PDF 页码批注；v0.5 合并为「原文对照阅读」（PDF 自动分页/分栏/分段、逐段译文与词汇、内联批注、扫描版 OCR）；v0.6 支持导入新的 PDF / DOCX 文献并直接进入对照阅读。
 
 ## 立即使用
 
@@ -10,9 +10,10 @@
 - 右栏：三组个人笔记、阅读状态、个人优先级、自动保存、手动保存历史版本。
 - 研究精读中的选区可以点击「选段批注」加入边注。跨域 PDF 或出版社网页无法直接读取选区，可添加引文/页码作为手动边注。
 - 右上角「导出 Markdown」只下载当前论文及其笔记、边注；「打印 / 保存为 PDF」使用浏览器打印对话框。右栏底部仍可导出完整 JSON 备份（含 `issues + notes + margins + revisions`）。「导入归档」支持每日 JSON 和已导出的备份；冲突期次保存成 `-v2`, `-v3`，旧版不覆盖。
-- PDF 文件本身单独保存在**当前设备浏览器的 IndexedDB**，不包含在导出的 JSON 里。请另外备份 PDF。
+- PDF 文件本身单独保存在**当前设备浏览器的 IndexedDB**，不包含在导出的 JSON 里。请另外备份 PDF。导入文献的正文与 DOCX 原文件同样只存 IndexedDB；JSON 备份只含元数据，换设备需重新导入文件。
 - PDF：载入本机或开放获取 PDF 后，用 pdf.js 在浏览器内提取文字，自动分页、分栏、分段；每段显示**原文 + 译文 + 词汇**，点「＋ 批注」行内写批注即可进入左栏边注，定位自动为「PDF p.N ¶M」。扫描版自动转 OCR（tesseract.js + 英文模型，较慢）。
 - 翻译设置：默认「自动（本地优先）」——优先 Chrome 内置翻译，失败转 Google / MyMemory；可切换自定义 OpenAI 兼容 API（地址 / 模型 / Key 只存本机 `localStorage`）。译文按段懒加载并缓存在本机，不写入归档，也不进入 JSON 备份。
+- 「＋ 文献」或把 PDF / DOCX 拖入页面：解析后弹出元数据确认，导入为「IMPORT · 我的导入」条目，并**自动生成原文对照阅读**，无需粘贴。PDF 仍可在「查看原 PDF」中打开；DOCX 按纯文本段落提取（图片、表格不保留）。元数据与原文只存本机，DOCX 解析使用 mammoth.js。
 - 无法直接解析的 PDF（跨域、扫描质量差）会保留原 PDF 预览，可下载后用「载入本机 PDF」重试，或把文字粘贴到「换一段原文」。
 
 ## 数据安全与限制
@@ -30,7 +31,7 @@
 
 ## 开发与部署
 
-这是无构建依赖的纯静态版本：`index.html` 单文件嵌入全部 CSS、JS、公开归档与词汇库，适合 GitHub Pages、Cloudflare Pages、Netlify 等静态托管。服务端不需要 Node。`python build.py` 会把 `data/archive.json`、`data/lexicon.json` 注入 `base.html` 的四个占位符（`CSS_INJECT` / `LEXICON_INJECT` / `DATA_INJECT` / `JS_INJECT`）生成 `index.html`。PDF 解析与 OCR 依赖放在 `vendor/`（pdf.js、tesseract.js 及英文语言包，Apache-2.0），只在打开 PDF 时按需加载。
+这是无构建依赖的纯静态版本：`index.html` 单文件嵌入全部 CSS、JS、公开归档与词汇库，适合 GitHub Pages、Cloudflare Pages、Netlify 等静态托管。服务端不需要 Node。`python build.py` 会把 `data/archive.json`、`data/lexicon.json` 注入 `base.html` 的四个占位符（`CSS_INJECT` / `LEXICON_INJECT` / `DATA_INJECT` / `JS_INJECT`）生成 `index.html`。PDF 解析、DOCX 解析与 OCR 依赖放在 `vendor/`（pdf.js、mammoth.js、tesseract.js 及英文语言包，Apache-2.0/BSD-2-Clause），只在需要时按需加载。
 
 建议正式版后端：独立只读 `issues` 内容表 + 用户私有 `notes/margins/revisions` 表。账户登录应启用行级权限控制；防止跨账号泄漏私人注释。静态代码中不要放 API 密钥。
 
