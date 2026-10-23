@@ -109,3 +109,41 @@
   .src-para{font-size:12px;padding:10px}
   .src-para-no{flex-basis:22px}
 }
+
+/* ---------- 原文阅读卡片：译文/词汇/内联批注 ---------- */
+.src-para{display:block;padding:14px}
+.src-para-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.src-para-no{padding-top:0}
+.src-para-tools{display:flex;align-items:center;gap:8px}
+.src-annot-btn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:3px 9px;font-size:10px;color:var(--sea-dark);cursor:pointer;font-weight:700}
+.src-annot-btn:hover{background:var(--sea-pale);border-color:#b7d2ce}
+.src-para-text{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.78}
+.src-zh{margin-top:9px;padding:9px 11px;background:var(--sea-pale);border-radius:7px;font-size:13px;line-height:1.85;color:#2b4a4f;white-space:pre-wrap}
+.src-zh.muted{color:#8a9a9c;font-style:italic}
+.src-zh.error{background:#fbeeea;color:#a8584b;font-style:normal}
+.src-vocab{display:flex;flex-wrap:wrap;gap:5px 7px;margin-top:9px;align-items:center}
+.vchip{padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700}
+.vword{font-size:11px;font-weight:700;color:var(--ink)}
+.vgloss{font-size:10px;color:var(--muted);margin-right:4px}
+.src-margins{margin-top:8px}
+.src-margin{display:flex;gap:8px;align-items:flex-start;background:#fbf5ea;border-left:2px solid var(--copper);padding:6px 8px;margin-top:5px;font-size:11px;line-height:1.6;color:#6b5a44}
+.src-margin p{margin:0;flex:1}
+.src-margin-kind{font-size:9px;font-weight:700;color:var(--copper);white-space:nowrap}
+.src-margin button{border:0;background:transparent;color:#a08a72;cursor:pointer;font-size:13px;line-height:1}
+.src-compose{margin-top:9px}
+.src-compose textarea{width:100%;min-height:70px;resize:vertical;border:1px solid var(--line);border-radius:7px;padding:8px 10px;font-family:inherit;font-size:12px;line-height:1.7;background:#fffdf9;color:var(--ink);outline:none}
+.src-compose textarea:focus{border-color:var(--sea)}
+.src-compose-actions{display:flex;gap:8px;margin-top:6px}
+.src-settings{margin:10px 0 4px;border:1px dashed var(--line);border-radius:8px;padding:8px 10px;font-size:11px;background:#fffdf9}
+.src-settings summary{cursor:pointer;color:var(--sea-dark);font-weight:700}
+.src-settings-body{margin-top:8px;display:flex;flex-direction:column;gap:7px}
+.src-settings label{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.src-settings select,.src-settings input{border:1px solid var(--line);border-radius:6px;padding:4px 7px;font-family:inherit;font-size:11px;background:#fff;color:var(--ink);min-width:150px}
+.src-api-fields{display:flex;flex-direction:column;gap:6px}
+.src-settings-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+@media(max-width:720px){.src-para{padding:11px}}
+.vitem{display:inline-flex;align-items:baseline;gap:5px;background:#fff;border:1px solid #ece7dc;border-radius:6px;padding:2px 7px;font-size:10px;color:#5f6d70}
+.vitem b{font-size:11px;color:var(--ink)}
+.pdf-page-marker{margin:18px 0 6px;font-size:10px;letter-spacing:.12em;color:var(--copper);font-weight:700;border-top:1px solid var(--line);padding-top:10px}
+.pdf-page-marker:first-child{margin-top:0;border-top:0;padding-top:0}
+.pdf-textbar{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#f7f4ec;border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin:8px 0;font-size:11px;color:var(--muted)}
