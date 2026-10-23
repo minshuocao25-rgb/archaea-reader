@@ -1,0 +1,15 @@
+*.zip
+*.bak
+*.backup
+*.pdf
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*backup*.json
+*notes*.json
+*annotation*.json
+node_modules/
+.DS_Store
+Thumbs.db
