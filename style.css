@@ -151,3 +151,5 @@
 .import-note{font-size:10px;color:var(--muted);line-height:1.6;margin:12px 0 0}
 .drop-hint{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(246,243,236,.92);border:3px dashed var(--sea);color:var(--sea-dark);font-size:20px;font-weight:700;pointer-events:none}
 body.dropping .drop-hint{display:flex}
+
+.mini-toolbar{flex-wrap:wrap;gap:6px}.mini-toolbar>span{flex-basis:100%}.mini-toolbar #paperDeleteBtn{color:#a36256}.mini-toolbar button:disabled{opacity:.4;cursor:default}.source-chinese{font-size:11px;color:#6b8482;background:transparent}.modal .delete-notes-option{display:flex;gap:8px;align-items:flex-start;font-weight:400;line-height:1.7}.modal .delete-notes-option input{width:auto;margin:4px 0 0;flex:none}#deletePaperName{overflow-wrap:anywhere;font-weight:600}
