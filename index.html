@@ -25,6 +25,90 @@
   .print-margin{margin:0 0 6mm;break-inside:auto}
   .print-sheet a{color:#111;text-decoration:underline}
 }
+#notesTab{display:none}
+@media(min-width:721px) and (max-width:940px){
+  #notesTab{display:flex;align-items:center;justify-content:center;position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:12;writing-mode:vertical-rl;letter-spacing:.12em;padding:16px 8px;border:1px solid var(--line);border-right:0;border-radius:9px 0 0 9px;background:#fffdf9;color:var(--sea-dark);font-size:11px;font-weight:700;box-shadow:-4px 0 14px rgba(24,43,47,.08);cursor:pointer;transition:right .23s ease,background .2s ease}
+  .app.notes-open #notesTab{right:min(375px,90vw)}
+  #notesTab:hover{background:var(--sea-pale)}
+  #notesTab.active{background:var(--sea-pale);color:var(--sea-dark)}
+}
+/* ---------- 整段翻译与词汇简析 ---------- */
+.tr-panel{border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:14px;margin-top:14px}
+.tr-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.tr-label{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.tr-count{font-size:10px;color:var(--muted);white-space:nowrap}
+#trSource{width:100%;min-height:132px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:11px 12px;font-family:inherit;font-size:13px;line-height:1.75;color:var(--ink);background:#fffdf9;outline:none}
+#trSource:focus{border-color:var(--sea);box-shadow:0 0 0 3px rgba(68,124,133,.08)}
+.tr-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.tr-actions .tr-run{margin-left:auto}
+.tr-status{font-size:11px;color:var(--muted);margin-top:9px;min-height:16px}
+.tr-status.error{color:#a8584b}
+.tr-output{margin-top:6px}
+.tr-meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:10px;color:var(--muted);margin:16px 0 10px}
+.tr-meta-actions{margin-left:auto;display:flex;gap:14px}
+.tr-block{border-left:2px solid var(--sea-pale);padding:2px 0 2px 13px;margin:0 0 18px}
+.tr-block-label{font-size:9px;letter-spacing:.12em;color:var(--copper);font-weight:700;margin-bottom:4px}
+.tr-target{margin:0;font-size:14px;line-height:1.9;white-space:pre-wrap}
+.tr-original{margin-top:8px}
+.tr-original summary{font-size:10px;color:var(--muted);cursor:pointer}
+.tr-original p{margin:6px 0 0;font-size:12px;line-height:1.7;color:#5c6b70;white-space:pre-wrap}
+.vocab-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;border-top:1px solid var(--line);padding-top:16px;margin-top:22px}
+.vocab-head h3{margin:0;font:600 16px/1.4 Georgia,"Noto Serif SC",serif}
+.vocab-sum{font-size:10px;color:var(--muted)}
+.vocab-wrap{overflow-x:auto;margin-top:10px}
+.vocab-table{width:100%;border-collapse:collapse;font-size:12px}
+.vocab-table th{text-align:left;font-size:9px;letter-spacing:.1em;color:var(--muted);font-weight:700;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.vocab-table td{padding:7px 8px;border-bottom:1px solid #eeeae0;vertical-align:top;line-height:1.65}
+.vocab-word{font-weight:700;color:var(--ink);white-space:nowrap}
+.vocab-word sup{font-weight:400;color:var(--copper);font-size:9px}
+.vocab-table em{color:#7d8b8e;font-style:normal;font-size:11px}
+.vocab-note{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.lv{display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;white-space:nowrap}
+.lv-prof{background:#f6e9df;color:#9a603c}
+.lv-ielts{background:#e6f1f0;color:#2d636b}
+.lv-cet6{background:#eaf0f5;color:#4a6a86}
+.lv-cet4{background:#f0f0ea;color:#6f7566}
+.lv-morph{background:#f3ecf7;color:#75558a}
+.lv-none{background:#f2f2f2;color:#8a8a8a}
+@media(max-width:720px){
+  .tr-actions .tr-run{width:100%;margin-left:0}
+  .vocab-table{min-width:0;font-size:11px}
+  .vocab-table th,.vocab-table td{padding:6px 5px}
+  .vocab-word{white-space:normal}
+  .tr-meta-actions{margin-left:0}
+}
+/* ---------- 原文分段批注与 PDF 页码条 ---------- */
+.pdf-pagebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fffdf9}
+.pdf-pagebar.hidden{display:none}
+.page-btn{border:1px solid var(--line);background:#fff;border-radius:6px;width:30px;height:28px;cursor:pointer;color:var(--sea-dark);font-size:12px}
+.page-btn:hover{background:var(--sea-pale)}
+.page-ind{font-size:11px;color:var(--muted)}
+.page-ind b{color:var(--sea-dark);font-size:13px}
+.page-hint{font-size:10px;color:var(--muted);margin-left:auto}
+.src-panel{border-top:1px solid var(--line);margin-top:24px;padding-top:16px}
+.src-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.src-head h3{margin:0;font:600 16px/1.4 Georgia,"Noto Serif SC",serif}
+.src-head span{font-size:10px;color:var(--muted)}
+.src-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.src-hint{font-size:10px;color:var(--muted)}
+.src-paste{margin:4px 0 12px}
+.src-paste textarea{width:100%;min-height:110px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:12px;line-height:1.7;background:#fffdf9;color:var(--ink);outline:none}
+.src-paste textarea:focus{border-color:var(--sea)}
+.src-paras{border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-top:4px}
+.src-para{position:relative;display:flex;gap:9px;padding:11px 12px;border-bottom:1px solid #eeeae0;background:#fffdf9;cursor:pointer;font-size:13px;line-height:1.78}
+.src-para:last-child{border-bottom:0}
+.src-para:hover{background:var(--sea-pale)}
+.src-para.annotated{background:#fbf7ef}
+.src-para-no{flex:0 0 26px;font-size:9px;font-weight:700;color:var(--copper);padding-top:4px;letter-spacing:.04em}
+.src-para-text{flex:1;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.src-para-add{flex:0 0 auto;color:var(--copper);opacity:.45;font-size:14px;line-height:1.4}
+.src-para:hover .src-para-add{opacity:1}
+.src-para-badge{flex:0 0 auto;font-size:9px;color:var(--copper);padding-top:4px;white-space:nowrap}
+@media(max-width:720px){
+  .page-hint{margin-left:0}
+  .src-para{font-size:12px;padding:10px}
+  .src-para-no{flex-basis:22px}
+}
 </style></head><body>
 <div class="app" id="app">
   <header class="topbar">
@@ -36,11 +120,11 @@
     <aside class="left-col" id="leftCol">
       <section class="nav-card"><div class="section-eyebrow">RESEARCH ARCHIVE / 文献库</div><div class="library-title">穿越时间的证据 <small id="totalPaperCount"></small></div><div class="search-box"><span>⌕</span><input id="searchInput" placeholder="搜索标题、DOI、主题…" autocomplete="off"/><button id="clearSearch" aria-label="清除搜索">×</button></div><div class="mini-toolbar"><span>每日精选 · 每期≤3篇</span><button id="dateSortBtn">日期 ↓</button></div><div class="archive-scroll" id="archiveList"></div></section>
       <section class="margin-card"><div class="section-head"><span class="section-eyebrow">MARGIN NOTES / 左侧边注</span><button class="tiny-icon" id="newMarginNote" title="新增边注">＋</button></div><div class="margin-help">选中文献精读文字可建立引用批注；阅读外部 PDF 时也可手动填写页码与摘录。</div><div class="margin-list" id="marginList"><div class="empty-mini">打开一篇文献，开始留下线索。</div></div></section>
-      <footer class="left-foot">ARCHAEA / RESEARCH NOTES <span>v0.2 · 2026</span></footer>
+      <footer class="left-foot">ARCHAEA / RESEARCH NOTES <span>v0.4 · 2026</span></footer>
     </aside>
     <main class="center-col" id="centerCol">
       <div class="main-wrap"><div class="crumb" id="crumb">ARCHIVE <span>/</span> 最新一期 <span>/</span> 阅读台</div><div id="mainTitle"></div>
-      <div class="mode-tabs" role="tablist"><button data-mode="analysis" class="active" role="tab">研究精读</button><button data-mode="original" role="tab">原文阅读 ↗</button><button data-mode="metadata" role="tab">书目与核验</button><span class="tab-fill"></span><button class="ghost-icon" id="addQuoteFromSelection" title="选中正文后点击，保存引用批注">✎ 选段批注</button></div>
+      <div class="mode-tabs" role="tablist"><button data-mode="analysis" class="active" role="tab">研究精读</button><button data-mode="original" role="tab">原文阅读 ↗</button><button data-mode="metadata" role="tab">书目与核验</button><button data-mode="translate" role="tab">翻译 / 词汇</button><span class="tab-fill"></span><button class="ghost-icon" id="addQuoteFromSelection" title="选中正文后点击，保存引用批注">✎ 选段批注</button></div>
       <div class="paper-surface" id="paperSurface"></div>
       </div>
     </main>
@@ -53,6 +137,7 @@
       <div class="right-tip">✧ 笔记自动保存在当前浏览器。Markdown/PDF 只包含当前论文；跨设备备份请使用下方 JSON。尚未接入云同步。<br><button class="bare-btn" id="backupBtn" title="导出完整归档与全部私人笔记，仅保存在本机">导出完整 JSON 备份</button></div>
     </aside>
   </div>
+  <button type="button" id="notesTab" class="notes-tab" aria-controls="rightCol" aria-expanded="false" title="打开 / 关闭我的批注">我的批注</button>
   <nav class="mobile-nav"><button data-mobile="archive">归档</button><button data-mobile="reader" class="active">阅读</button><button data-mobile="notes">我的批注</button></nav>
 </div>
 <article id="printSheet" class="print-sheet" aria-hidden="true"></article>
@@ -60,7 +145,449 @@
 <input type="file" id="importInput" hidden accept=".json,application/json" multiple>
 <input type="file" id="pdfInput" hidden accept=".pdf,application/pdf">
 <div class="modal-backdrop hidden" id="marginModal" role="dialog" aria-modal="true"><div class="modal"><div class="modal-heading"><div><div class="section-eyebrow">MARGIN NOTE</div><h3>建立一条边注</h3></div><button id="closeModal" aria-label="关闭">×</button></div><label>引用原文 / 关键词<textarea id="quoteField" placeholder="粘贴一段原文；若选中了精读正文，会自动填入。"></textarea></label><div class="modal-row"><label>定位（页码/章节）<input id="locatorField" placeholder="p. 6 / Methods / Fig. 2"/></label><label>分类<select id="marginKind"><option value="question">疑问</option><option value="method">方法</option><option value="insight">启发</option><option value="caution">质疑</option></select></label></div><label>你的批注<textarea id="marginComment" placeholder="写下解释、反例、需要查证的数据或你自己的研究想法……"></textarea></label><div class="modal-actions"><button id="deleteMargin" class="danger-btn hidden">删除</button><div class="spacer"></div><button id="cancelModal" class="outline-btn">取消</button><button id="submitMargin" class="solid-btn">保存边注</button></div></div></div>
-<script>window.ARCHAEA_DATA={
+<script>window.ARCHAEA_LEXICON={
+  "domain": [
+    ["proteome", "n.", "蛋白质组", "一个样本中全部蛋白质的集合"],
+    ["proteomics", "n.", "蛋白质组学", ""],
+    ["paleoproteomics", "n.", "古蛋白质组学", "从化石、骨骼、牙结石中提取古代蛋白质"],
+    ["protein", "n.", "蛋白质", ""],
+    ["genome", "n.", "基因组", ""],
+    ["genomic", "adj.", "基因组的", ""],
+    ["genomics", "n.", "基因组学", ""],
+    ["dna", "n.", "脱氧核糖核酸", "DNA；aDNA 指古 DNA"],
+    ["adna", "n.", "古 DNA", "ancient DNA 的缩写"],
+    ["rna", "n.", "核糖核酸", ""],
+    ["mitochondrial", "adj.", "线粒体的", "线粒体 DNA 常用于母系谱系研究"],
+    ["denisovan", "n./adj.", "丹尼索瓦人（的）", ""],
+    ["neanderthal", "n./adj.", "尼安德特人（的）", ""],
+    ["hominin", "n.", "人亚族（人类及近亲）", ""],
+    ["hominid", "n.", "人科动物", ""],
+    ["pleistocene", "adj./n.", "更新世（的）", "约 258 万—1.17 万年前"],
+    ["holocene", "adj./n.", "全新世（的）", "约 1.17 万年前至今"],
+    ["morphology", "n.", "形态；形态学", ""],
+    ["morphological", "adj.", "形态（学）的", ""],
+    ["phylogeny", "n.", "系统发育关系", ""],
+    ["phylogenetic", "adj.", "系统发育的", ""],
+    ["clade", "n.", "演化支；分支", ""],
+    ["introgression", "n.", "基因渗入", "杂交后外源基因进入某群体基因组"],
+    ["admixture", "n.", "混合；基因混合", ""],
+    ["ancestry", "n.", "祖先来源；血统", ""],
+    ["lineage", "n.", "世系；谱系", ""],
+    ["allele", "n.", "等位基因", ""],
+    ["genotype", "n.", "基因型", ""],
+    ["haplotype", "n.", "单倍型", ""],
+    ["nucleotide", "n.", "核苷酸", ""],
+    ["sequence", "n./v.", "序列；测定序列", ""],
+    ["sequencing", "n.", "测序", ""],
+    ["shotgun", "adj.", "鸟枪法的", "shotgun sequencing：鸟枪法测序"],
+    ["enrichment", "n.", "富集", "如 DNA 捕获富集"],
+    ["contamination", "n.", "污染", ""],
+    ["endogenous", "adj.", "内源的", "来自样本自身"],
+    ["exogenous", "adj.", "外源的", "来自环境或实验操作"],
+    ["degradation", "n.", "降解", ""],
+    ["deamination", "n.", "脱氨基作用", "胞嘧啶脱氨是古 DNA 损伤的典型形式"],
+    ["fragmentation", "n.", "片段化", ""],
+    ["uracil", "n.", "尿嘧啶", "脱氨损伤的标记碱基"],
+    ["cytosine", "n.", "胞嘧啶", ""],
+    ["collagen", "n.", "胶原蛋白", "骨与牙中保存最久的蛋白质之一"],
+    ["isotope", "n.", "同位素", ""],
+    ["isotopic", "adj.", "同位素的", ""],
+    ["radiocarbon", "n.", "放射性碳；碳十四", ""],
+    ["calibration", "n.", "校正；定年校正", ""],
+    ["chronology", "n.", "年代学；年代序列", ""],
+    ["stratigraphy", "n.", "地层学", ""],
+    ["stratigraphic", "adj.", "地层的", ""],
+    ["sediment", "n.", "沉积物", ""],
+    ["sedimentary", "adj.", "沉积的", ""],
+    ["assemblage", "n.", "（遗存）组合；集合体", ""],
+    ["lithic", "adj./n.", "石质的；石制品", ""],
+    ["artifact", "n.", "人工制品；器物", ""],
+    ["fauna", "n.", "动物群", ""],
+    ["flora", "n.", "植物群", ""],
+    ["subsistence", "n.", "生计；生业方式", ""],
+    ["trophic", "adj.", "营养（级）的", ""],
+    ["enamel", "n.", "牙釉质", ""],
+    ["dentine", "n.", "牙本质", ""],
+    ["bone", "n.", "骨；骨骼", ""],
+    ["tooth", "n.", "牙齿", ""],
+    ["skeletal", "adj.", "骨骼的", ""],
+    ["osteology", "n.", "骨学", ""],
+    ["taphonomy", "n.", "埋藏学", "研究遗体如何埋藏、保存与改造"],
+    ["diagenesis", "n.", "成岩作用", "埋藏后骨骼或沉积物的化学改造"],
+    ["preservation", "n.", "保存（状态）", ""],
+    ["excavation", "n.", "发掘", ""],
+    ["cave", "n.", "洞穴", ""],
+    ["provenance", "n.", "来源；出土地", ""],
+    ["specimen", "n.", "标本", ""],
+    ["taxonomy", "n.", "分类学", ""],
+    ["taxonomic", "adj.", "分类学的", ""],
+    ["genus", "n.", "（生物学）属", ""],
+    ["demography", "n.", "人口统计学；群体历史", ""],
+    ["dispersal", "n.", "扩散；迁徙", ""],
+    ["bottleneck", "n.", "瓶颈（效应）", "群体规模骤减导致遗传多样性下降"],
+    ["drift", "n.", "遗传漂变", ""],
+    ["mutation", "n.", "突变", ""],
+    ["variant", "n.", "变异（型）；变体", ""],
+    ["polymorphism", "n.", "多态性", ""],
+    ["methylation", "n.", "甲基化", ""],
+    ["epigenetics", "n.", "表观遗传学", ""],
+    ["peptide", "n.", "肽", ""],
+    ["spectrometry", "n.", "质谱/光谱测定法", ""],
+    ["chromatography", "n.", "色谱法", ""],
+    ["bioinformatics", "n.", "生物信息学", ""],
+    ["alignment", "n.", "比对；序列比对", ""],
+    ["coverage", "n.", "覆盖度；测序深度", ""],
+    ["posterior", "adj./n.", "后验的；后验分布", ""],
+    ["likelihood", "n.", "似然", ""],
+    ["bayesian", "adj.", "贝叶斯的", ""],
+    ["hypothesis", "n.", "假设；假说", ""],
+    ["replicate", "v./n.", "重复（实验）；重复样本", ""],
+    ["pipeline", "n.", "分析流程；管线", ""],
+    ["dataset", "n.", "数据集", ""],
+    ["repository", "n.", "数据库；存储库", ""],
+    ["accession", "n.", "登录号；入库编号", ""],
+    ["zooarchaeology", "n.", "动物考古学", ""],
+    ["paleolithic", "adj.", "旧石器时代的", ""],
+    ["mesolithic", "adj.", "中石器时代的", ""],
+    ["neolithic", "adj.", "新石器时代的", ""],
+    ["domestication", "n.", "驯化", ""],
+    ["herding", "n.", "放牧；畜养", ""],
+    ["forager", "n.", "觅食者；采集狩猎者", ""],
+    ["mobility", "n.", "流动性；迁徙性", ""],
+    ["interglacial", "adj./n.", "间冰期（的）", ""],
+    ["glacial", "adj.", "冰川的；冰期（的）", ""],
+    ["site", "n.", "遗址；地点", ""],
+    ["layer", "n.", "层；地层", ""],
+    ["dating", "n.", "定年；年代测定", "如 radiocarbon dating"],
+    ["horizon", "n.", "层位；地平线", "考古地层中的层位"]
+  ],
+  "exam": [
+    ["abundant", "CET4", "adj.", "丰富的；大量的", ""],
+    ["acquire", "CET4", "v.", "获得；习得", ""],
+    ["adapt", "CET4", "v.", "适应；改编", ""],
+    ["adequate", "CET4", "adj.", "足够的；适当的", ""],
+    ["adjust", "CET4", "v.", "调整；适应", ""],
+    ["alter", "CET4", "v.", "改变；改动", ""],
+    ["analyze", "CET4", "v.", "分析", "英式拼写 analyse"],
+    ["analysis", "CET4", "n.", "分析", "复数 analyses"],
+    ["annual", "CET4", "adj.", "每年的；年度的", ""],
+    ["apparent", "CET4", "adj.", "明显的；表面上的", ""],
+    ["approach", "CET4", "n./v.", "方法；接近", ""],
+    ["assess", "CET4", "v.", "评估；评定", ""],
+    ["assume", "CET4", "v.", "假定；认为", ""],
+    ["available", "CET4", "adj.", "可获得的；可用的", ""],
+    ["benefit", "CET4", "n./v.", "益处；受益", ""],
+    ["capacity", "CET4", "n.", "容量；能力", ""],
+    ["category", "CET4", "n.", "类别；范畴", ""],
+    ["challenge", "CET4", "n./v.", "挑战；质疑", ""],
+    ["characteristic", "CET4", "n./adj.", "特征；典型的", ""],
+    ["cite", "CET4", "v.", "引用；引证", ""],
+    ["complex", "CET4", "adj./n.", "复杂的；综合体", ""],
+    ["component", "CET4", "n.", "成分；部件", ""],
+    ["conclude", "CET4", "v.", "得出结论；结束", ""],
+    ["conduct", "CET4", "v./n.", "实施；行为", ""],
+    ["confirm", "CET4", "v.", "证实；确认", ""],
+    ["consequence", "CET4", "n.", "结果；后果", ""],
+    ["consist", "CET4", "v.", "由……组成", ""],
+    ["constant", "CET4", "adj.", "持续的；恒定的", ""],
+    ["consume", "CET4", "v.", "消耗；消费", ""],
+    ["context", "CET4", "n.", "背景；语境", ""],
+    ["contrast", "CET4", "n./v.", "对比；形成对照", ""],
+    ["contribute", "CET4", "v.", "贡献；促成", ""],
+    ["convert", "CET4", "v.", "转换；改变", ""],
+    ["crucial", "CET4", "adj.", "关键的；至关重要的", ""],
+    ["decline", "CET4", "v./n.", "下降；衰退", ""],
+    ["define", "CET4", "v.", "定义；界定", ""],
+    ["demonstrate", "CET4", "v.", "证明；展示", ""],
+    ["derive", "CET4", "v.", "源自；推导", ""],
+    ["detect", "CET4", "v.", "检测；察觉", ""],
+    ["determine", "CET4", "v.", "确定；决定", ""],
+    ["distinct", "CET4", "adj.", "不同的；明显的", ""],
+    ["distribute", "CET4", "v.", "分布；分配", ""],
+    ["diverse", "CET4", "adj.", "多样的；不同的", ""],
+    ["dominate", "CET4", "v.", "占主导；支配", ""],
+    ["eliminate", "CET4", "v.", "排除；消除", ""],
+    ["emerge", "CET4", "v.", "出现；显露", ""],
+    ["enable", "CET4", "v.", "使能够", ""],
+    ["ensure", "CET4", "v.", "确保；保证", ""],
+    ["establish", "CET4", "v.", "建立；确立", ""],
+    ["estimate", "CET4", "v./n.", "估计；估算", ""],
+    ["evaluate", "CET4", "v.", "评价；评估", ""],
+    ["evidence", "CET4", "n.", "证据", ""],
+    ["evolve", "CET4", "v.", "演化；逐渐发展", ""],
+    ["exceed", "CET4", "v.", "超过；超出", ""],
+    ["expand", "CET4", "v.", "扩大；扩展", ""],
+    ["expose", "CET4", "v.", "暴露；使接触", ""],
+    ["extend", "CET4", "v.", "延伸；延长", ""],
+    ["factor", "CET4", "n.", "因素；因子", ""],
+    ["feature", "CET4", "n./v.", "特征；以……为特色", ""],
+    ["generate", "CET4", "v.", "产生；生成", ""],
+    ["identify", "CET4", "v.", "识别；确认", ""],
+    ["indicate", "CET4", "v.", "表明；指示", ""],
+    ["infer", "CET4", "v.", "推断；推论", ""],
+    ["integrate", "CET4", "v.", "整合；结合", ""],
+    ["interpret", "CET4", "v.", "解释；解读", ""],
+    ["investigate", "CET4", "v.", "调查；研究", ""],
+    ["isolate", "CET4", "v.", "分离；隔离", ""],
+    ["maintain", "CET4", "v.", "维持；坚持认为", ""],
+    ["major", "CET4", "adj./n.", "主要的；专业", ""],
+    ["mechanism", "CET4", "n.", "机制；机理", ""],
+    ["modify", "CET4", "v.", "修改；改变", ""],
+    ["obtain", "CET4", "v.", "获得；得到", ""],
+    ["occur", "CET4", "v.", "发生；出现", ""],
+    ["outcome", "CET4", "n.", "结果；成果", ""],
+    ["population", "CET4", "n.", "人口；群体", "生物学中指种群"],
+    ["potential", "CET4", "adj./n.", "潜在的；潜力", ""],
+    ["precise", "CET4", "adj.", "精确的；准确的", ""],
+    ["preserve", "CET4", "v.", "保存；保护", ""],
+    ["previous", "CET4", "adj.", "以前的；先前的", ""],
+    ["primary", "CET4", "adj.", "主要的；初级的", ""],
+    ["principle", "CET4", "n.", "原理；原则", ""],
+    ["propose", "CET4", "v.", "提出；提议", ""],
+    ["pursue", "CET4", "v.", "追求；继续从事", ""],
+    ["range", "CET4", "n./v.", "范围；从……到……", ""],
+    ["recover", "CET4", "v.", "恢复；找回", "古 DNA 语境常指回收序列"],
+    ["regulate", "CET4", "v.", "调节；管理", ""],
+    ["reject", "CET4", "v.", "拒绝；否定", ""],
+    ["relevant", "CET4", "adj.", "相关的；切题的", ""],
+    ["reliable", "CET4", "adj.", "可靠的；可信的", ""],
+    ["require", "CET4", "v.", "需要；要求", ""],
+    ["resemble", "CET4", "v.", "类似于；与……相像", ""],
+    ["resolve", "CET4", "v.", "解决；决心", ""],
+    ["restrict", "CET4", "v.", "限制；约束", ""],
+    ["retain", "CET4", "v.", "保留；保持", ""],
+    ["reveal", "CET4", "v.", "揭示；显示", ""],
+    ["significant", "CET4", "adj.", "显著的；重要的", ""],
+    ["stable", "CET4", "adj.", "稳定的", ""],
+    ["strategy", "CET4", "n.", "策略；战略", ""],
+    ["sufficient", "CET4", "adj.", "足够的；充分的", ""],
+    ["summary", "CET4", "n.", "摘要；总结", ""],
+    ["survey", "CET4", "n./v.", "调查；概览", ""],
+    ["sustain", "CET4", "v.", "维持；支撑", ""],
+    ["target", "CET4", "n./v.", "目标；以……为目标", ""],
+    ["technique", "CET4", "n.", "技术；方法", ""],
+    ["temporary", "CET4", "adj.", "暂时的；临时的", ""],
+    ["tendency", "CET4", "n.", "趋势；倾向", ""],
+    ["transfer", "CET4", "v./n.", "转移；传递", ""],
+    ["transform", "CET4", "v.", "转变；改造", ""],
+    ["transmit", "CET4", "v.", "传播；传递", ""],
+    ["trend", "CET4", "n.", "趋势；动向", ""],
+    ["unique", "CET4", "adj.", "独特的；唯一的", ""],
+    ["utilize", "CET4", "v.", "利用；使用", ""],
+    ["valid", "CET4", "adj.", "有效的；合理的", ""],
+    ["vary", "CET4", "v.", "变化；不同", ""],
+    ["verify", "CET4", "v.", "核实；验证", ""],
+    ["visible", "CET4", "adj.", "可见的；明显的", ""],
+    ["widespread", "CET4", "adj.", "广泛的；普遍的", ""],
+    ["accumulate", "CET6", "v.", "积累；堆积", ""],
+    ["advocate", "CET6", "v./n.", "提倡；倡导者", ""],
+    ["attribute", "CET6", "v./n.", "归因于；属性", ""],
+    ["bias", "CET6", "n./v.", "偏差；偏见", ""],
+    ["collapse", "CET6", "v./n.", "崩塌；崩溃", ""],
+    ["comparable", "CET6", "adj.", "可比较的；类似的", ""],
+    ["compensate", "CET6", "v.", "补偿；抵消", ""],
+    ["comprehensive", "CET6", "adj.", "全面的；综合的", ""],
+    ["conflict", "CET6", "n./v.", "冲突；矛盾", ""],
+    ["consistent", "CET6", "adj.", "一致的；连续的", ""],
+    ["constitute", "CET6", "v.", "构成；组成", ""],
+    ["contemporary", "CET6", "adj.", "当代的；同时代的", ""],
+    ["controversy", "CET6", "n.", "争议；争论", ""],
+    ["conventional", "CET6", "adj.", "传统的；常规的", ""],
+    ["convince", "CET6", "v.", "使信服；说服", ""],
+    ["cooperate", "CET6", "v.", "合作；配合", ""],
+    ["correlate", "CET6", "v.", "相关；使关联", ""],
+    ["correspond", "CET6", "v.", "对应；通信", ""],
+    ["diminish", "CET6", "v.", "减少；减弱", ""],
+    ["drastic", "CET6", "adj.", "剧烈的；极端的", ""],
+    ["duration", "CET6", "n.", "持续时间；期间", ""],
+    ["dynamic", "CET6", "adj./n.", "动态的；动力", ""],
+    ["elaborate", "CET6", "adj./v.", "精细的；详述", ""],
+    ["enhance", "CET6", "v.", "增强；提高", ""],
+    ["enormous", "CET6", "adj.", "巨大的；庞大的", ""],
+    ["equivalent", "CET6", "adj./n.", "等同的；对应物", ""],
+    ["exploit", "CET6", "v.", "利用；开发", ""],
+    ["facilitate", "CET6", "v.", "促进；使便利", ""],
+    ["illustrate", "CET6", "v.", "说明；举例", ""],
+    ["impose", "CET6", "v.", "强加；施加", ""],
+    ["incorporate", "CET6", "v.", "纳入；合并", ""],
+    ["induce", "CET6", "v.", "引起；诱导", ""],
+    ["innovative", "CET6", "adj.", "创新的；新颖的", ""],
+    ["justify", "CET6", "v.", "证明……正当；为……辩护", ""],
+    ["nevertheless", "CET6", "adv.", "然而；尽管如此", ""],
+    ["notable", "CET6", "adj.", "显著的；值得注意的", ""],
+    ["objective", "CET6", "n./adj.", "目标；客观的", ""],
+    ["ongoing", "CET6", "adj.", "持续的；进行中的", ""],
+    ["persist", "CET6", "v.", "持续；坚持", ""],
+    ["prohibit", "CET6", "v.", "禁止；阻止", ""],
+    ["prospect", "CET6", "n.", "前景；可能性", ""],
+    ["refine", "CET6", "v.", "改进；精炼", ""],
+    ["reinforce", "CET6", "v.", "加强；强化", ""],
+    ["scope", "CET6", "n.", "范围；余地", ""],
+    ["simulate", "CET6", "v.", "模拟；仿真", ""],
+    ["sole", "CET6", "adj.", "唯一的；单独的", ""],
+    ["statistics", "CET6", "n.", "统计；统计学", ""],
+    ["tolerate", "CET6", "v.", "容忍；耐受", ""],
+    ["undertake", "CET6", "v.", "承担；着手", ""],
+    ["violate", "CET6", "v.", "违反；侵犯", ""],
+    ["adjacent", "IELTS", "adj.", "相邻的；邻近的", ""],
+    ["ambiguous", "IELTS", "adj.", "模棱两可的；含糊的", ""],
+    ["arbitrary", "IELTS", "adj.", "任意的；武断的", ""],
+    ["coherent", "IELTS", "adj.", "连贯的；一致的", ""],
+    ["coincide", "IELTS", "v.", "同时发生；一致", ""],
+    ["comprise", "IELTS", "v.", "包括；由……组成", ""],
+    ["concurrent", "IELTS", "adj.", "同时发生的；并行的", ""],
+    ["constrain", "IELTS", "v.", "限制；约束", ""],
+    ["cumulative", "IELTS", "adj.", "累积的；渐增的", ""],
+    ["deviate", "IELTS", "v.", "偏离；背离", ""],
+    ["discrete", "IELTS", "adj.", "离散的；分开的", ""],
+    ["discriminate", "IELTS", "v.", "区分；歧视", ""],
+    ["empirical", "IELTS", "adj.", "经验的；实证的", ""],
+    ["explicit", "IELTS", "adj.", "明确的；显式的", ""],
+    ["fluctuate", "IELTS", "v.", "波动；起伏", ""],
+    ["incentive", "IELTS", "n.", "激励；动机", ""],
+    ["incidence", "IELTS", "n.", "发生率；影响范围", ""],
+    ["inherent", "IELTS", "adj.", "固有的；内在的", ""],
+    ["intrinsic", "IELTS", "adj.", "内在的；本质的", ""],
+    ["magnitude", "IELTS", "n.", "量级；重要性", ""],
+    ["negligible", "IELTS", "adj.", "可忽略的；微不足道的", ""],
+    ["notion", "IELTS", "n.", "概念；观念", ""],
+    ["offset", "IELTS", "v./n.", "抵消；补偿", ""],
+    ["overlap", "IELTS", "v./n.", "重叠；交叠", ""],
+    ["parameter", "IELTS", "n.", "参数；界限", ""],
+    ["phenomenon", "IELTS", "n.", "现象", "复数 phenomena"],
+    ["predominant", "IELTS", "adj.", "占主导的；主要的", ""],
+    ["profound", "IELTS", "adj.", "深刻的；深远的", ""],
+    ["prominent", "IELTS", "adj.", "突出的；著名的", ""],
+    ["radical", "IELTS", "adj./n.", "根本的；激进的", ""],
+    ["rigorous", "IELTS", "adj.", "严格的；严谨的", ""],
+    ["scenario", "IELTS", "n.", "情景；设想", ""],
+    ["successive", "IELTS", "adj.", "连续的；相继的", ""],
+    ["suppress", "IELTS", "v.", "抑制；压制", ""],
+    ["thereby", "IELTS", "adv.", "从而；由此", ""],
+    ["threshold", "IELTS", "n.", "阈值；门槛", ""],
+    ["underlying", "IELTS", "adj.", "潜在的；根本的", ""],
+    ["uniform", "IELTS", "adj.", "一致的；均匀的", ""],
+    ["virtual", "IELTS", "adj.", "虚拟的；实际上的", ""],
+    ["provide", "CET4", "v.", "提供；给予", ""],
+    ["include", "CET4", "v.", "包括；包含", ""],
+    ["increase", "CET4", "v./n.", "增加；增长", ""],
+    ["decrease", "CET4", "v./n.", "减少；下降", ""],
+    ["measure", "CET4", "v./n.", "测量；指标", ""],
+    ["compare", "CET4", "v.", "比较；对比", ""],
+    ["observe", "CET4", "v.", "观察；注意到", ""],
+    ["suggest", "CET4", "v.", "表明；建议", ""],
+    ["support", "CET4", "v./n.", "支持；支撑", ""],
+    ["explain", "CET4", "v.", "解释；说明", ""],
+    ["describe", "CET4", "v.", "描述；描绘", ""],
+    ["report", "CET4", "v./n.", "报告；报道", ""],
+    ["examine", "CET4", "v.", "检查；审视", ""],
+    ["calculate", "CET4", "v.", "计算", ""],
+    ["predict", "CET4", "v.", "预测；预言", ""],
+    ["record", "CET4", "v./n.", "记录；纪录", ""],
+    ["remain", "CET4", "v.", "仍然是；保留", ""],
+    ["appear", "CET4", "v.", "出现；似乎", ""],
+    ["produce", "CET4", "v.", "产生；生产", ""],
+    ["reflect", "CET4", "v.", "反映；反射", ""],
+    ["represent", "CET4", "v.", "代表；表示", ""],
+    ["involve", "CET4", "v.", "涉及；包含", ""],
+    ["relate", "CET4", "v.", "关联；讲述", ""],
+    ["depend", "CET4", "v.", "取决于；依靠", ""],
+    ["differ", "CET4", "v.", "不同；相异", ""],
+    ["reduce", "CET4", "v.", "减少；降低", ""],
+    ["improve", "CET4", "v.", "改善；提高", ""],
+    ["allow", "CET4", "v.", "允许；使得", ""],
+    ["cause", "CET4", "v./n.", "导致；原因", ""],
+    ["affect", "CET4", "v.", "影响；作用于", ""],
+    ["influence", "CET4", "n./v.", "影响", ""],
+    ["consider", "CET4", "v.", "考虑；认为", ""],
+    ["regard", "CET4", "v.", "认为；看待", ""],
+    ["refer", "CET4", "v.", "指；参考", ""],
+    ["contain", "CET4", "v.", "包含；容纳", ""],
+    ["pattern", "CET4", "n.", "模式；图案", ""],
+    ["process", "CET4", "n./v.", "过程；处理", ""],
+    ["structure", "CET4", "n.", "结构；构造", ""],
+    ["function", "CET4", "n.", "功能；作用", ""],
+    ["value", "CET4", "n.", "值；价值", ""],
+    ["effect", "CET4", "n.", "影响；效应", ""],
+    ["role", "CET4", "n.", "作用；角色", ""],
+    ["rate", "CET4", "n.", "速率；比率", ""],
+    ["level", "CET4", "n.", "水平；层级", ""],
+    ["size", "CET4", "n.", "大小；规模", ""],
+    ["shape", "CET4", "n.", "形状", ""],
+    ["age", "CET4", "n.", "年龄；时代", ""],
+    ["group", "CET4", "n.", "组；群体", ""],
+    ["region", "CET4", "n.", "地区；区域", ""],
+    ["period", "CET4", "n.", "时期；周期", ""],
+    ["document", "CET6", "v./n.", "记录；文件", ""],
+    ["yield", "CET6", "v.", "产生；让步", ""],
+    ["shift", "CET6", "v./n.", "转变；转移", ""],
+    ["ancient", "CET4", "adj.", "古代的；古老的", ""],
+    ["position", "CET4", "n.", "位置；立场", ""],
+    ["human", "CET4", "n./adj.", "人类（的）", ""],
+    ["fossil", "CET4", "n.", "化石", ""],
+    ["stone", "CET4", "n.", "石头；石料", ""],
+    ["tool", "CET4", "n.", "工具", ""],
+    ["culture", "CET4", "n.", "文化", ""],
+    ["modern", "CET4", "adj.", "现代的", ""],
+    ["direct", "CET4", "adj./v.", "直接的；指导", ""],
+    ["similar", "CET4", "adj.", "相似的", ""],
+    ["different", "CET4", "adj.", "不同的", ""],
+    ["possible", "CET4", "adj.", "可能的", ""],
+    ["diversity", "CET4", "n.", "多样性；差异", ""],
+    ["substantial", "CET6", "adj.", "大量的；实质性的", ""],
+    ["variation", "CET4", "n.", "变化；变异", ""]
+  ],
+  "morph": [
+    ["paleo-", "pre", "古老；古", "paleoproteomics"],
+    ["palaeo-", "pre", "古老；古（英式拼写）", "palaeogenomics"],
+    ["archaeo-", "pre", "古代；考古", "archaeology"],
+    ["bio-", "pre", "生命；生物", "bioarchaeology"],
+    ["geo-", "pre", "地球；地质", "geochronology"],
+    ["iso-", "pre", "相等；同", "isotope"],
+    ["topo-", "pre", "位置；地点", "topography"],
+    ["morpho-", "pre", "形态", "morphology"],
+    ["phylo-", "pre", "演化支；类群", "phylogeny"],
+    ["zoo-", "pre", "动物", "zooarchaeology"],
+    ["anthro-", "pre", "人类", "anthropology"],
+    ["demo-", "pre", "人群；人口", "demography"],
+    ["chrono-", "pre", "时间", "chronology"],
+    ["strati-", "pre", "层", "stratigraphy"],
+    ["hydro-", "pre", "水", "hydrogen"],
+    ["thermo-", "pre", "热", "thermoluminescence"],
+    ["micro-", "pre", "微；小", "microfauna"],
+    ["macro-", "pre", "大；宏观", "macroevolution"],
+    ["mega-", "pre", "巨；大", "megafauna"],
+    ["mono-", "pre", "单；一", "monophyletic"],
+    ["poly-", "pre", "多", "polymorphism"],
+    ["multi-", "pre", "多；复合", "multidisciplinary"],
+    ["inter-", "pre", "之间；跨", "interdisciplinary"],
+    ["intra-", "pre", "内部", "intraspecific"],
+    ["trans-", "pre", "跨越；转", "transmission"],
+    ["sub-", "pre", "下；次", "subadult"],
+    ["pre-", "pre", "前", "prehistoric"],
+    ["post-", "pre", "后", "postglacial"],
+    ["proto-", "pre", "原始；初", "protolanguage"],
+    ["neo-", "pre", "新", "neolithic"],
+    ["hetero-", "pre", "异", "heterozygous"],
+    ["homo-", "pre", "同", "homologous"],
+    ["-ome", "suf", "组；整体", "proteome"],
+    ["-omics", "suf", "组学", "genomics"],
+    ["-genesis", "suf", "起源；发生", "pathogenesis"],
+    ["-genic", "suf", "产生的", "anthropogenic"],
+    ["-logy", "suf", "学科", "archaeology"],
+    ["-logist", "suf", "学者；人", "archaeologist"],
+    ["-metry", "suf", "测量", "morphometry"],
+    ["-graphy", "suf", "记录；学", "stratigraphy"],
+    ["-scope", "suf", "观察仪器", "microscope"],
+    ["-vore", "suf", "食者", "carnivore"],
+    ["-fauna", "suf", "动物群", "microfauna"],
+    ["-flora", "suf", "植物群", "microflora"],
+    ["-clade", "suf", "支系", "clade"],
+    ["-phyly", "suf", "演化关系", "phylogeny"],
+    ["-lithic", "suf", "石（器）", "paleolithic"]
+  ]
+}
+;</script><script>window.ARCHAEA_DATA={
   "schema_version": 1,
   "site_name": "Archaea｜古DNA文献阅读台",
   "generated_on": "2026-10-22",
@@ -748,7 +1275,7 @@ const doiUrl=(d)=>'https://doi.org/'+encodeURI(String(d||'').replace(/^https?:\/
 function loadJSON(k,fallback){try{const x=localStorage.getItem(PREFIX+k);return x?JSON.parse(x):fallback;}catch(e){return fallback;}}
 function saveJSON(k,obj){try{localStorage.setItem(PREFIX+k,JSON.stringify(obj));return true;}catch(e){toast('浏览器存储空间不足。请立即导出备份，或减少导入文件。');return false;}}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('visible'),3200);}
-const state={issueData:loadJSON('issues',seed.issues||[]),notes:loadJSON('notes',{}),margins:loadJSON('margins',{}),revisions:loadJSON('revisions',{}),pdfMeta:loadJSON('pdfmeta',{}),mode:'analysis',selected:null,issue:null,search:'',newest:true,editingMargin:null,mobile:'reader',historyOpen:false,readerUrl:null,loadingFulltext:false};
+const state={issueData:loadJSON('issues',seed.issues||[]),notes:loadJSON('notes',{}),margins:loadJSON('margins',{}),revisions:loadJSON('revisions',{}),pdfMeta:loadJSON('pdfmeta',{}),mode:'analysis',selected:null,issue:null,search:'',newest:true,editingMargin:null,mobile:'reader',historyOpen:false,readerUrl:null,loadingFulltext:false,tr:{},src:{},pdfPage:1};
 let saveTimer=null;let revisionTimer=null;let toastTimer=null;let lastSelection='';
 const paperList=()=>state.issueData.flatMap(issue=>(issue.papers||[]).map(p=>({...p,__issue:issue.issue_id,__issueDate:issue.date})));
 const noteFor=(key)=>state.notes[key]||{summary:'',methods:'',ideas:'',status:'unread',rating:'',updated:null};
@@ -756,10 +1283,10 @@ const marginFor=(key)=>state.margins[key]||[];
 function selectedPaper(){return paperList().find(p=>p.__issue===state.issue&&p.id===state.selected)||paperList().find(p=>p.id===state.selected)||null;}
 function issueCode(issue){const n=Number(issue.issue_number);return 'NO.'+String(Number.isFinite(n)&&n>0?n:issue.date?.slice(-2)||'—').padStart(3,'0');}
 function labels(p){return {title:p.title||'未命名论文',date:showDate(p.date),authors:Array.isArray(p.authors)?p.authors.join('、'):String(p.authors||''),journal:p.journal||'未收录期刊',kind:p.kind||'文献类型待核验',reading:p.reading_status||'来源批注未提供核读状态'};}
-function activatePaper(id,issue){commitNote();state.selected=id;state.issue=issue||state.issue;state.mode='analysis';state.readerUrl=null;state.historyOpen=false;try{localStorage.setItem(PREFIX+'active',JSON.stringify({id,issue:state.issue}));}catch(e){}render();setMobile('reader');$('centerCol').scrollTop=0;}
+function activatePaper(id,issue){commitNote();state.selected=id;state.issue=issue||state.issue;state.mode='analysis';state.readerUrl=null;state.pdfPage=1;state.historyOpen=false;try{localStorage.setItem(PREFIX+'active',JSON.stringify({id,issue:state.issue}));}catch(e){}render();setMobile('reader');$('centerCol').scrollTop=0;}
 function normalizedIssues(){let a=[...state.issueData];a.sort((x,y)=>String(x.date).localeCompare(y.date)*(state.newest?-1:1));return a;}
 function renderArchive(){const all=paperList(), text=state.search.trim().toLowerCase();const el=$('archiveList');let visible=0;el.innerHTML=normalizedIssues().map(issue=>{
- const ps=(issue.papers||[]).filter(p=>[p.title,p.doi,p.journal,p.question,(p.topic||[]).join(' ')].some(x=>String(x||'').toLowerCase().includes(text)));
+ const ps=(issue.papers||[]).filter(p=>[p.title,p.doi,p.journal,p.question,[].concat(p.topic||[]).join(' ')].some(x=>String(x||'').toLowerCase().includes(text)));
  if(!ps.length)return '';visible+=ps.length;
  return `<div class="issue-group"><div class="issue-group-header"><span>${issueCode(issue)} · ${safe(issue.date)}</span><small>${ps.length} 篇</small></div>${ps.map((p,i)=>{
  const isactive=(p.id===state.selected&&issue.issue_id===state.issue);const note=noteFor(p.id);
@@ -781,10 +1308,20 @@ function renderAnalysis(p){const sections=[['01 / RESEARCH QUESTION · 研究目
 function renderMetadata(p){const l=labels(p);const rows=[['英文标题',l.title],['作者',l.authors],['期刊 / 平台',l.journal],['首次发表',l.date],['文献类型',l.kind],['DOI',p.doi||'未提供'],['收录期号',p.__issue],['核读程度',l.reading],['历史核验记录',p.verification||'未记录'],['来源提示',p.notice],['主题',Array.isArray(p.topic)?p.topic.join('、'):'']];
  return `<div class="notice info">此页保留了原归档提供的书目信息。过往“已核验”状态来自历史记录；需要重新确认时，请点击下方的在线核验按钮。</div><dl class="metadata-grid">${rows.map(([k,v])=>`<dt>${safe(k)}</dt><dd>${safe(v)}</dd>`).join('')}</dl><div class="link-row"><a class="link-btn" target="_blank" rel="noopener noreferrer" href="${safe(doiUrl(p.doi))}">↗ DOI 官方解析</a><button class="link-btn secondary" id="verifyDoiBtn">⌕ 在线核对 DOI 登记</button></div><div id="verificationResult"></div>`;
 }
-function renderOriginal(p){return `<div class="notice info">合法全文优先：尝试 OpenAlex 获取开放获取 PDF 地址；只嵌入可公开访问的文件。出版社限制嵌入、非开放获取或浏览器阻止跨域加载时，请使用官方原文入口，或者导入你合法持有的 PDF。</div><div class="original-toolbar"><div class="link-row"><button class="link-btn" id="findOA">⌕ 查找开放获取原文</button><button class="link-btn secondary" id="localPdfBtn">＋ 载入本机 PDF</button><a class="link-btn secondary" href="${safe(doiUrl(p.doi))}" target="_blank" rel="noopener noreferrer">↗ 出版社 / DOI</a></div></div><div class="original-hint" id="originalStatus">检测到可嵌入 PDF 后，阅读器会在这里展示原文。PDF 中的文字如受跨域限制，可在右侧手动记录页码和引用。</div><div id="originalFrame"><div class="blank-frame"><div><strong>READ THE SOURCE</strong>点击「查找开放获取原文」或「载入本机 PDF」，进入原文阅读。<br>DOI 本身并不保证论文全文开放获取。</div></div></div><div class="link-row"><button class="outline-btn" id="addPdfQuoteBtn">＋ 添加 PDF 页码边注</button></div>`;}
-function renderMain(){renderTitle();const p=selectedPaper();const surf=$('paperSurface');surf.innerHTML=!p?'<div class="archive-empty"><h2>尚未导入任何文献</h2><p>通过右上角导入每日 JSON，即可建立文献归档。</p></div>':state.mode==='analysis'?renderAnalysis(p):state.mode==='metadata'?renderMetadata(p):renderOriginal(p);
+async function fetchPaperAbstract(p){if(!p||!p.doi)return '';let text='';try{const r=await fetch('https://api.openalex.org/works/https://doi.org/'+encodeURI(p.doi));if(r.ok){const j=await r.json();if(j&&j.abstract_inverted_index)text=abstractFromInverted(j.abstract_inverted_index);}}catch(e){}if(!text){try{const r=await fetch('https://api.crossref.org/works/'+encodeURIComponent(p.doi));if(r.ok){const j=await r.json();text=stripJats(j&&j.message&&j.message.abstract);}}catch(e){}}return String(text||'').trim();}
+function splitSourceParagraphs(text){const clean=String(text||'').replace(/\r\n?/g,'\n').replace(/\u00a0/g,' ').trim();if(!clean)return [];const blocks=clean.split(/\n\s*\n+/).map(s=>s.trim()).filter(Boolean);if(blocks.length>1)return blocks;const sents=clean.match(/[^.!?;]+[.!?;]?["')\]]?\s*/g)||[clean];const out=[];let buf='';for(const s of sents){if((buf+s).length>260&&buf.trim()){out.push(buf.trim());buf='';}if(s.length>320){for(let i=0;i<s.length;i+=300)out.push(s.slice(i,i+300));}else{buf+=s;}}if(buf.trim())out.push(buf.trim());return out.length?out:[clean];}
+function renderSourcePanel(p){const rec=state.src[p.id];const head='<div class="src-head"><h3>原文分段批注</h3><span>点击段落 → 只写批注 → 保存即进入侧栏边注</span></div>';const paste='<div class="src-paste hidden" id="srcPasteWrap"><textarea id="srcPaste" spellcheck="false" placeholder="粘贴原文或摘要，空行分段；单段长文本会按句子自动切分。"></textarea><div class="link-row"><button class="link-btn" id="segmentSrc">分段预览</button><button class="bare-btn" id="cancelSrcPaste">取消</button></div></div>';if(!rec||!rec.paragraphs||!rec.paragraphs.length){return '<section class="src-panel">'+head+'<div class="src-actions"><button class="link-btn secondary" id="loadSrcAbstract">↧ 载入开放摘要</button><button class="link-btn secondary" id="showSrcPaste">✎ 粘贴原文</button><span class="src-hint">PDF 文字若无法直接读取，可从 PDF 复制后粘贴到这里。</span></div>'+paste+'</section>';}const margins=marginFor(p.id);const paras=rec.paragraphs.map((txt,i)=>{const loc=(rec.label||'原文')+' ¶'+(i+1);const n=margins.filter(m=>m.locator===loc).length;return '<div class="src-para'+(n?' annotated':'')+'" data-src-index="'+i+'" data-locator="'+safe(loc)+'"><span class="src-para-no">¶'+(i+1)+'</span><span class="src-para-text">'+safe(txt)+'</span>'+(n?'<span class="src-para-badge">✎ '+n+'</span>':'')+'<span class="src-para-add">＋</span></div>';}).join('');return '<section class="src-panel">'+head+'<div class="src-actions"><button class="link-btn secondary" id="loadSrcAbstract">↧ 重新载入摘要</button><button class="link-btn secondary" id="showSrcPaste">✎ 换一段原文</button><span class="src-hint">'+(rec.label||'原文')+' · '+rec.paragraphs.length+' 段 · 点击段落即可批注</span></div>'+paste+'<div class="src-paras">'+paras+'</div></section>';}
+function renderOriginal(p){const frame=state.readerUrl?'<iframe class="pdf-frame" src="'+safe(state.readerUrl+(state.pdfPage>1?'#page='+state.pdfPage:''))+'" title="PDF 原文" referrerpolicy="no-referrer"></iframe>':'<div class="blank-frame"><div><strong>READ THE SOURCE</strong>点击「查找开放获取原文」或「载入本机 PDF」，进入原文阅读。<br>DOI 本身并不保证论文全文开放获取。</div></div>';return '<div class="notice info">合法全文优先：尝试 OpenAlex 获取开放获取 PDF 地址；只嵌入可公开访问的文件。PDF 无法内嵌时，可把原文段落粘贴到下方「原文分段批注」，点击段落自动带入引用与位置。</div><div class="original-toolbar"><div class="link-row"><button class="link-btn" id="findOA">⌕ 查找开放获取原文</button><button class="link-btn secondary" id="localPdfBtn">＋ 载入本机 PDF</button><a class="link-btn secondary" href="'+safe(doiUrl(p.doi))+'" target="_blank" rel="noopener noreferrer">↗ 出版社 / DOI</a></div></div><div class="original-hint" id="originalStatus">检测到可嵌入 PDF 后，阅读器会在这里展示原文；用下方页码条翻页并「批注本页」，或粘贴文本按段落批注。</div><div class="pdf-pagebar'+(state.readerUrl?'':' hidden')+'" id="pdfPageBar"><button type="button" class="page-btn" data-pdfpage="-1" title="上一页">◀</button><span class="page-ind">第 <b id="pdfPageNum">'+(state.pdfPage||1)+'</b> 页</span><button type="button" class="page-btn" data-pdfpage="1" title="下一页">▶</button><button type="button" class="link-btn secondary" id="annotatePdfPage">＋ 批注本页</button><span class="page-hint" id="pdfPageHint"></span></div><div id="originalFrame">'+frame+'</div>'+renderSourcePanel(p);}
+async function loadSourceAbstract(){const p=selectedPaper();if(!p)return;if(!p.doi)return toast('本篇没有 DOI，无法自动获取摘要');const st=$('originalStatus');if(st)st.textContent='正在从 OpenAlex / Crossref 获取开放摘要…';const text=await fetchPaperAbstract(p);if(!text){if(st)st.textContent='没有取到开放摘要。可从 PDF 复制文本，用「粘贴原文」分段。';return toast('没有取到开放摘要');}state.src[p.id]={text,label:'摘要',paragraphs:splitSourceParagraphs(text)};renderMain();const el=document.querySelector('.src-panel');if(el&&el.scrollIntoView)el.scrollIntoView({block:'start'});toast('已自动分段：点击任意段落即可写边注');}
+function toggleSrcPaste(force){const w=$('srcPasteWrap');if(!w)return;const show=force===undefined?w.classList.contains('hidden'):!!force;w.classList.toggle('hidden',!show);if(show){const ta=$('srcPaste');if(ta)ta.focus();}}
+function segmentSrcText(){const p=selectedPaper();if(!p)return;const ta=$('srcPaste');const text=ta?ta.value.trim():'';if(!text)return toast('请先粘贴原文');state.src[p.id]={text,label:'原文',paragraphs:splitSourceParagraphs(text)};renderMain();const el=document.querySelector('.src-panel');if(el&&el.scrollIntoView)el.scrollIntoView({block:'start'});toast('已自动分段：点击段落即可写边注');}
+function updatePdfPageUI(){const p=selectedPaper();const n=state.pdfPage||1;const num=$('pdfPageNum');if(num)num.textContent=n;const hint=$('pdfPageHint');if(hint&&p){const c=marginFor(p.id).filter(m=>m.locator==='PDF p.'+n).length;hint.textContent=c?'本页已有 '+c+' 条边注':'翻页后点「批注本页」';}}
+function pdfGo(delta){state.pdfPage=Math.max(1,(state.pdfPage||1)+delta);const fr=document.querySelector('#originalFrame iframe');if(fr&&state.readerUrl){const base=String(state.readerUrl).split('#')[0];fr.src=base+'#page='+state.pdfPage;}updatePdfPageUI();}
+function annotatePdfPage(){const p=selectedPaper();if(!p)return;if(!state.readerUrl)return toast('请先载入 PDF 或开放原文');openMargin(null,'','PDF p.'+(state.pdfPage||1));}
+function refreshSrcBadges(){const p=selectedPaper();if(!p)return;const rec=state.src[p.id];if(!rec)return;const margins=marginFor(p.id);document.querySelectorAll('.src-para[data-locator]').forEach(el=>{const n=margins.filter(m=>m.locator===el.dataset.locator).length;let b=el.querySelector('.src-para-badge');if(n>0){if(!b){b=document.createElement('span');b.className='src-para-badge';el.appendChild(b);}b.textContent='✎ '+n;el.classList.add('annotated');}else{if(b)b.remove();el.classList.remove('annotated');}});}
+function renderMain(){renderTitle();const p=selectedPaper();const surf=$('paperSurface');surf.innerHTML=!p?'<div class="archive-empty"><h2>尚未导入任何文献</h2><p>通过右上角导入每日 JSON，即可建立文献归档。</p></div>':state.mode==='analysis'?renderAnalysis(p):state.mode==='metadata'?renderMetadata(p):state.mode==='translate'?renderTranslate(p):renderOriginal(p);
  document.querySelectorAll('.mode-tabs [data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===state.mode));
- if(p&&state.mode==='original')loadLocalPdf(p).catch(()=>{});
+ if(p&&state.mode==='original'){updatePdfPageUI();refreshSrcBadges();loadLocalPdf(p).catch(()=>{});}
 }
 function renderMargins(){const p=selectedPaper(),el=$('marginList');if(!p){el.innerHTML='<div class="empty-mini">请选择文献。</div>';return;}
  const arr=marginFor(p.id);el.innerHTML=arr.length?arr.slice().reverse().map(m=>`<div class="margin-note" data-editmargin="${safe(m.id)}"><div class="mtop"><span>${safe({question:'❓ 疑问',method:'▧ 方法',insight:'✦ 启发',caution:'⚑ 质疑'}[m.kind]||'边注')}</span><span>${safe(m.locator||'未定位')}</span></div>${m.quote?`<blockquote>“${safe(cap(m.quote,150))}”</blockquote>`:''}<p>${safe(cap(m.comment,160))}</p></div>`).join(''):'<div class="empty-mini">暂无个人边注。<br>你可以选中文本或手动添加。</div>';
@@ -799,19 +1336,19 @@ function collectNote(){return {summary:$('noteSummary').value,methods:$('noteMet
 function commitNote(){const p=selectedPaper();if(!p)return;const n=collectNote();state.notes[p.id]=n;saveJSON('notes',state.notes);setSave(`● 已保存 ${new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}`);}
 function queueNoteSave(){setSave('● 保存中…',true);clearTimeout(saveTimer);saveTimer=setTimeout(()=>{commitNote();},420);}
 function saveRevision(){const p=selectedPaper();if(!p)return toast('请先选择文献');commitNote();const arr=state.revisions[p.id]||(state.revisions[p.id]=[]);const date=stamp();arr.push({id:date+'_'+Math.random().toString(36).slice(2,6),date,note:JSON.parse(JSON.stringify(state.notes[p.id]))});if(saveJSON('revisions',state.revisions)){state.historyOpen=true;renderHistory();$('revCount').textContent=arr.length;toast('笔记快照已保存，可随时恢复。');}}
-function openMargin(m=null,quote=''){const p=selectedPaper();if(!p)return toast('请先选择文献');state.editingMargin=m?.id||null;$('quoteField').value=m?.quote||quote||'';$('locatorField').value=m?.locator||'';$('marginComment').value=m?.comment||'';$('marginKind').value=m?.kind||'question';$('deleteMargin').classList.toggle('hidden',!m);$('marginModal').classList.remove('hidden');$('marginComment').focus();}
+function openMargin(m=null,quote='',locator=''){const p=selectedPaper();if(!p)return toast('请先选择文献');state.editingMargin=m?.id||null;$('quoteField').value=m?.quote||quote||'';$('locatorField').value=m?.locator||locator||'';$('marginComment').value=m?.comment||'';$('marginKind').value=m?.kind||'question';$('deleteMargin').classList.toggle('hidden',!m);$('marginModal').classList.remove('hidden');$('marginComment').focus();}
 function closeMargin(){$('marginModal').classList.add('hidden');state.editingMargin=null;}
-function saveMargin(){const p=selectedPaper();if(!p)return;const quote=$('quoteField').value.trim(),comment=$('marginComment').value.trim();if(!quote&&!comment)return toast('请输入引用或批注内容');const arr=state.margins[p.id]||(state.margins[p.id]=[]);const now=stamp(),m={id:state.editingMargin||now+'_'+Math.random().toString(36).slice(2,8),quote,comment,locator:$('locatorField').value.trim(),kind:$('marginKind').value,updated:now};if(state.editingMargin){const pos=arr.findIndex(x=>x.id===state.editingMargin);if(pos>=0)arr[pos]=m;else arr.push(m);}else arr.push(m);saveJSON('margins',state.margins);renderMargins();closeMargin();toast('边注已保存到本机。');}
-function deleteMargin(){const p=selectedPaper();if(!p||!state.editingMargin)return;state.margins[p.id]=marginFor(p.id).filter(m=>m.id!==state.editingMargin);saveJSON('margins',state.margins);closeMargin();renderMargins();toast('边注已删除。');}
+function saveMargin(){const p=selectedPaper();if(!p)return;const quote=$('quoteField').value.trim(),comment=$('marginComment').value.trim();if(!quote&&!comment)return toast('请输入引用或批注内容');const arr=state.margins[p.id]||(state.margins[p.id]=[]);const now=stamp(),m={id:state.editingMargin||now+'_'+Math.random().toString(36).slice(2,8),quote,comment,locator:$('locatorField').value.trim(),kind:$('marginKind').value,updated:now};if(state.editingMargin){const pos=arr.findIndex(x=>x.id===state.editingMargin);if(pos>=0)arr[pos]=m;else arr.push(m);}else arr.push(m);saveJSON('margins',state.margins);renderMargins();updatePdfPageUI();refreshSrcBadges();closeMargin();toast('边注已保存到本机。');}
+function deleteMargin(){const p=selectedPaper();if(!p||!state.editingMargin)return;state.margins[p.id]=marginFor(p.id).filter(m=>m.id!==state.editingMargin);saveJSON('margins',state.margins);closeMargin();renderMargins();updatePdfPageUI();refreshSrcBadges();toast('边注已删除。');}
 function setMode(mode){commitNote();state.mode=mode;renderMain();$('centerCol').scrollTop=0;}
 function selectionQuote(){const s=window.getSelection();if(!s||s.isCollapsed)return '';const t=s.toString().trim();if(!t)return '';const node=s.anchorNode?.parentElement;const el=node?.closest('[data-selectable]');return el&&$('paperSurface').contains(el)?t.slice(0,3000):'';}
 function download(name,content,type='application/json'){const b=new Blob([content],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);}
 function exportBackup(){commitNote();const data={format:'archaea_reader_backup',version:1,exported_at:stamp(),issues:state.issueData,notes:state.notes,margins:state.margins,revisions:state.revisions,pdfMeta:state.pdfMeta,disclaimer:'PDF文件二进制未包含在此备份中，请单独保存本地PDF。'};download('archaea-完整归档与批注-'+new Date().toISOString().slice(0,10)+'.json','\uFEFF'+JSON.stringify(data,null,2),'application/json;charset=utf-8');toast('已导出完整 JSON 备份：归档、个人笔记、边注和历史版本。');}
 function normalizeNewIssue(raw){if(!raw||!Array.isArray(raw.papers))throw Error('未找到 papers 数组');let issue=JSON.parse(JSON.stringify(raw));issue.issue_id=raw.issue_id||'manual-'+(raw.date||new Date().toISOString().slice(0,10));issue.date=raw.date||new Date().toISOString().slice(0,10);issue.issue_number=Number(raw.issue_number)||undefined;issue.papers=raw.papers.map((p,i)=>{
   let d=String(p.doi||'').trim().replace(/^https?:\/\/doi.org\//i,'').toLowerCase(); const get=(...ks)=>{for(const k of ks)if(p[k]!=null&&p[k]!=='')return Array.isArray(p[k])?p[k].join('、'):String(p[k]);return '';};
-  return {id:d||issue.issue_id+'-'+i,doi:d,title:get('title'),authors:p.authors||[],journal:get('journal','venue'),date:get('first_published','publication_date'),kind:get('publication_type','type'),priority:get('priority','learning_priority')||'A',url:get('publisher_url','url')||doiUrl(d),reading_status:get('reading_status'),topic:p.categories||p.category||[],question:get('research_question','question'),materials:get('materials'),design:get('study_design','design_methods','design'),methods:get('methods'),results:get('key_findings','findings','results'),innovation:get('methodological_innovation','innovation'),limitations:get('limitations'),future:get('future_value','future'),learning:get('learning','learning_priority'),verification:get('verification','metadata_verified_via'),notice:'用户导入内容；请通过官方 DOI 登记与期刊核验后引用。',source_issue:issue.issue_id};
+  return {id:d||issue.issue_id+'-'+i,doi:d,title:get('title'),authors:p.authors||[],journal:get('journal','venue'),date:get('first_published','publication_date'),kind:get('publication_type','type'),priority:get('priority','learning_priority')||'A',url:get('publisher_url','url')||doiUrl(d),reading_status:get('reading_status'),topic:Array.isArray(p.categories)?p.categories:(Array.isArray(p.category)?p.category:((p.categories||p.category)?[p.categories||p.category]:[])),question:get('research_question','question'),materials:get('materials'),design:get('study_design','design_methods','design'),methods:get('methods'),results:get('key_findings','findings','results'),innovation:get('methodological_innovation','innovation'),limitations:get('limitations'),future:get('future_value','future'),learning:get('learning','learning_priority'),verification:get('verification','metadata_verified_via'),notice:'用户导入内容；请通过官方 DOI 登记与期刊核验后引用。',source_issue:issue.issue_id};
  });return issue;}
-function addIssues(issues){let count=0,changed=0;for(let issue of issues){const old=state.issueData.find(x=>x.issue_id===issue.issue_id);if(old){const fingerprint=o=>JSON.stringify(o.papers?.map(p=>({doi:p.doi,title:p.title,date:p.date,results:p.results})));if(fingerprint(old)===fingerprint(issue))continue;const orig=old.issue_id;const versions=state.issueData.filter(x=>x.issue_id===orig||x.issue_id.startsWith(orig+'-v'));const v=versions.length+1;issue.issue_id=orig+'-v'+v;issue.version_of=orig;issue.version=v;changed++;}
+function addIssues(issues){let count=0,changed=0;for(let issue of issues){const old=state.issueData.find(x=>x.issue_id===issue.issue_id);if(old){const canon=v=>JSON.stringify(v,(k,val)=>val&&typeof val==='object'&&!Array.isArray(val)?Object.fromEntries(Object.keys(val).sort().map(x=>[x,val[x]])):val);const fingerprint=o=>canon(o.papers??[]);if(fingerprint(old)===fingerprint(issue))continue;const orig=old.issue_id;const versions=state.issueData.filter(x=>x.issue_id===orig||x.issue_id.startsWith(orig+'-v'));const v=versions.length+1;issue.issue_id=orig+'-v'+v;issue.version_of=orig;issue.version=v;changed++;}
  state.issueData.push(issue);count++;}
  if(count){saveJSON('issues',state.issueData);const last=state.issueData.at(-1);if(last?.papers?.length){state.selected=last.papers[0].id;state.issue=last.issue_id;}render();toast(`已导入 ${count} 期，其中 ${changed} 期作为新版本保存；旧版本没有覆盖。`);}else toast('没有新增内容：导入文件与现有归档相同。');}
 async function importFiles(files){let chunks=[],notesImported=0;for(const f of [...files]){let d;try{d=JSON.parse((await f.text()).replace(/^\uFEFF/,''))}catch(e){toast(f.name+' 不是有效JSON');continue;}if(d.format==='archaea_reader_backup'){
@@ -827,6 +1364,40 @@ const ISSUE_TITLE='古DNA与生物考古文献精选';
 const RESEARCH_SECTIONS=[['研究问题','question'],['研究材料','materials'],['实验设计','design'],['方法流程','methods'],['主要结果','results'],['方法学创新','innovation'],['局限与竞争解释','limitations'],['后续价值','future'],['学习重点','learning']];
 const STATUS_LABELS={unread:'待读',reading:'阅读中',reviewed:'已精读',revisit:'待复核'};
 const MARGIN_LABELS={question:'疑问',method:'方法',insight:'启发',caution:'质疑'};
+/* ---------- 整段翻译与词汇简析：本地优先，不默认上传原文 ---------- */
+const LEXICON=window.ARCHAEA_LEXICON||{domain:[],exam:[],morph:[]};
+const DOMAIN_LEX=new Map((LEXICON.domain||[]).map(([w,pos,zh,note])=>[String(w).toLowerCase(),{type:'prof',pos,zh,note}]));
+const EXAM_LEX=new Map((LEXICON.exam||[]).map(([w,level,pos,zh,note])=>[String(w).toLowerCase(),{type:'exam',level,pos,zh,note}]));
+const MORPH_PREFIX=(LEXICON.morph||[]).filter(m=>m[1]==='pre').map(m=>[String(m[0]).toLowerCase(),m[2]]).sort((a,b)=>b[0].length-a[0].length);
+const MORPH_SUFFIX=(LEXICON.morph||[]).filter(m=>m[1]==='suf').map(m=>[String(m[0]).toLowerCase(),m[2]]).sort((a,b)=>b[0].length-a[0].length);
+const STOPWORDS=new Set(('a an the and or but if then than that this these those there their they them we our you your he she his her it its of to in on at for from by with without as such not no nor so very can could may might must should would will shall do does did done has have had having is are was were be been being also more most less least other another some any each both few many much own same only just about into over after before between during under above below up down out off again further once here when where why how all either neither while because although though since until unless whether which who whom whose what whatever however therefore thus hence moreover furthermore besides instead rather already still yet even ever never always often sometimes usually according based due related compared respectively approximately estimated including reported observed found shown used using known called considered seen made given taken et al fig figure table supplementary data result results method methods study studies background objective conclusion conclusions aim aims introduction discussion sample samples').split(/\s+/).filter(Boolean));
+const IRREGULAR={analyses:'analysis',hypotheses:'hypothesis',phenomena:'phenomenon',criteria:'criterion',taxa:'taxon',genera:'genus',nuclei:'nucleus',teeth:'tooth',data:'data',species:'species',stimuli:'stimulus',loci:'locus',vertebrae:'vertebra'};
+const SPELLING={analyse:'analyze',analysed:'analyzed',analysing:'analyzing',behaviour:'behavior',colour:'color',favour:'favor',labour:'labor',centre:'center',metre:'meter',fibre:'fiber',defence:'defense',licence:'license',programme:'program',catalogue:'catalog'};
+let localTranslator=null;
+function canonicalWord(w){if(IRREGULAR[w])return IRREGULAR[w];if(SPELLING[w])return SPELLING[w];if(/ies$/.test(w)&&w.length>4)return w.slice(0,-3)+'y';if(/(ses|xes|zes|ches|shes)$/.test(w))return w.slice(0,-2);if(/s$/.test(w)&&!/(ss|us|is)$/.test(w)&&w.length>3)return w.slice(0,-1);if(/ing$/.test(w)&&w.length>5)return w.slice(0,-3);if(/ed$/.test(w)&&w.length>4)return w.slice(0,-2);return w;}
+function lexLookup(w){const base=canonicalWord(w);const cands=[w,base,base+'e'];if(base.endsWith('e'))cands.push(base.slice(0,-1));for(const c of cands){if(DOMAIN_LEX.has(c))return {entry:DOMAIN_LEX.get(c),key:c};if(EXAM_LEX.has(c))return {entry:EXAM_LEX.get(c),key:c};}return null;}
+function morphNotes(w){const notes=[];const p=MORPH_PREFIX.find(([m])=>w.startsWith(m)&&w.length-m.length>=3);if(p)notes.push(p[0]+'（'+p[1]+'）');const s=MORPH_SUFFIX.find(([m])=>w.endsWith(m)&&w.length-m.length>=3);if(s)notes.push(s[0]+'（'+s[1]+'）');return notes.join(' + ');}
+function analyzeVocabulary(text){const words=String(text||'').match(/[A-Za-z][A-Za-z'’-]*/g)||[];const rows=new Map();for(const raw of words){const surface=raw.replace(/[’']s$/i,'').replace(/^[’'-]+|[’'-]+$/g,'');if(surface.length<3)continue;const low=surface.toLowerCase();if(STOPWORDS.has(low))continue;const hit=lexLookup(low);if(!hit&&/^[A-Z]/.test(surface.charAt(0)))continue;const entry=hit&&hit.entry;const key=hit?(entry.type==='prof'?'p:'+hit.key:'e:'+hit.key):'w:'+canonicalWord(low);const row=rows.get(key);if(row){row.count++;continue;}if(entry&&entry.type==='prof'){rows.set(key,{word:(hit?hit.key:canonicalWord(low)),count:1,tag:'专业',cls:'prof',pos:entry.pos,zh:entry.zh,note:entry.note||''});}else if(entry&&entry.type==='exam'){rows.set(key,{word:(hit?hit.key:canonicalWord(low)),count:1,tag:entry.level,cls:String(entry.level).toLowerCase(),pos:entry.pos,zh:entry.zh,note:entry.note||''});}else{const note=morphNotes(low);if(note)rows.set(key,{word:(hit?hit.key:canonicalWord(low)),count:1,tag:'构词',cls:'morph',pos:'',zh:'词素：'+note,note:''});else if(canonicalWord(low).length>=7)rows.set(key,{word:(hit?hit.key:canonicalWord(low)),count:1,tag:'未收录',cls:'none',pos:'',zh:'未收录；建议结合上下文或外部词典核对。',note:''});}}
+const rank={prof:0,'专业':0,IELTS:1,CET6:2,CET4:3,morph:4,'构词':4,none:5,'未收录':5};return [...rows.values()].sort((a,b)=>(rank[a.tag]??9)-(rank[b.tag]??9)||b.count-a.count||a.word.localeCompare(b.word)).slice(0,120);}
+function splitParagraphs(text){return String(text||'').replace(/\r\n?/g,'\n').split(/\n\s*\n+/).map(s=>s.trim()).filter(Boolean);}
+function chunkText(text,max){const s=String(text||'');if(s.length<=max)return [s];const parts=[];let buf='';const sentences=s.match(/[^.!?;]+[.!?;]?\s*/g)||[s];for(const sent of sentences){if((buf+sent).length>max){if(buf.trim())parts.push(buf.trim());buf='';}if(sent.length>max){for(let i=0;i<sent.length;i+=max)parts.push(sent.slice(i,i+max));}else{buf+=sent;}}if(buf.trim())parts.push(buf.trim());return parts.filter(Boolean);}
+function trSetStatus(msg,isError){const el=$('trStatus');if(!el)return;el.textContent=msg||'';el.classList.toggle('error',!!isError);}
+async function getLocalTranslator(){if(localTranslator)return localTranslator;if(!window.Translator)return null;for(const targetLanguage of ['zh','zh-Hans']){try{if(window.Translator.availability){const a=await window.Translator.availability({sourceLanguage:'en',targetLanguage});if(a==='unavailable')continue;}localTranslator=await window.Translator.create({sourceLanguage:'en',targetLanguage,monitor(m){if(!m||!m.addEventListener)return;m.addEventListener('downloadprogress',e=>{try{if(e&&e.total)trSetStatus('正在下载本地语言模型 '+Math.round(e.loaded/e.total*100)+'%');}catch(err){}});}});if(localTranslator)return localTranslator;}catch(e){localTranslator=null;}}return null;}
+function decodeEntities(s){return String(s||'').replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&#(\d+);/g,(m,d)=>String.fromCharCode(+d));}
+async function gtxTranslate(text){const url='https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q='+encodeURIComponent(text);const r=await fetch(url);if(!r.ok)throw Error('Google HTTP '+r.status);const j=await r.json();if(!Array.isArray(j)||!Array.isArray(j[0]))throw Error('Google 返回格式异常');return j[0].map(x=>Array.isArray(x)?x[0]:'').join('');}
+async function myMemoryTranslate(text){const url='https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=en|zh-CN';const r=await fetch(url);if(!r.ok)throw Error('MyMemory HTTP '+r.status);const j=await r.json();if(j.responseStatus&&Number(j.responseStatus)!==200)throw Error(j.responseDetails||('MyMemory '+j.responseStatus));const t=j.responseData&&j.responseData.translatedText;if(!t)throw Error('MyMemory 未返回译文');return decodeEntities(t);}
+async function remoteTranslate(text){const chunks=chunkText(text,420);const out=[];for(const c of chunks){let done=false;try{out.push(await gtxTranslate(c));done=true;}catch(e){}if(!done)out.push(await myMemoryTranslate(c));}return out.join('');}
+async function runTranslation(){const p=selectedPaper();if(!p)return toast('请先选择文献');const ta=$('trSource');const text=ta?ta.value.trim():'';if(!text)return toast('请先粘贴英文段落，或载入本篇摘要');const cjk=(text.match(/[\u4e00-\u9fff]/g)||[]).length;if(cjk>text.length*0.4)return toast('这段文字以中文为主，请粘贴英文原文');const btn=$('trRun');if(btn){btn.disabled=true;btn.textContent='翻译中…';}trSetStatus('正在准备翻译引擎…');const started=Date.now();try{const paras=splitParagraphs(text);const local=await getLocalTranslator();const engine=local?'浏览器内置翻译（本地）':'在线翻译（Google / MyMemory）';if(!local)trSetStatus('本地翻译不可用，改用在线接口…');const results=[];let done=0;for(const para of paras){const pieces=chunkText(para,2500);const outs=[];for(const piece of pieces){try{outs.push(local?await local.translate(piece):await remoteTranslate(piece));}catch(e){if(!local)throw e;outs.push(await remoteTranslate(piece));}}results.push({src:para,out:outs.join('')});done++;if(paras.length>1)trSetStatus('已翻译 '+done+'/'+paras.length+' 段…');}const vocab=analyzeVocabulary(text);state.tr[p.id]={source:text,paragraphs:results,vocab,engine,at:stamp()};const out=$('trOutput');if(out){out.innerHTML=trResultHTML(state.tr[p.id]);if(out.scrollIntoView)out.scrollIntoView({block:'nearest'});}trSetStatus('完成：'+results.length+' 段 · '+vocab.length+' 个词汇候选 · 用时 '+((Date.now()-started)/1000).toFixed(1)+' 秒。');}catch(e){trSetStatus('翻译失败：'+(e&&e.message?e.message:e)+'。请检查网络，或改用支持内置翻译的 Chrome。',true);}finally{if(btn){btn.disabled=false;btn.textContent='译 · 翻译并分析词汇';}}}
+function abstractFromInverted(inv){const arr=[];Object.keys(inv||{}).forEach(w=>{(inv[w]||[]).forEach(pos=>{arr[pos]=w;});});return arr.filter(Boolean).join(' ');}
+function stripJats(html){const s=String(html||'');try{const d=new DOMParser().parseFromString(s,'text/html');return (d.body.textContent||'').replace(/\s+/g,' ').trim();}catch(e){return s.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();}}
+async function loadPaperAbstract(){const p=selectedPaper();if(!p)return;if(!p.doi)return toast('本篇没有 DOI，无法自动获取摘要，请手动粘贴');trSetStatus('正在从 OpenAlex / Crossref 获取英文摘要…');const text=await fetchPaperAbstract(p);if(!text){trSetStatus('没有取到开放摘要（可能未开放或网络受限）。请从原文复制段落粘贴。',true);return;}const ta=$('trSource');if(ta)ta.value=text;const rec=state.tr[p.id]||(state.tr[p.id]={});rec.source=text;const count=$('trCount');if(count)count.textContent=text.length+' 字符';trSetStatus('已载入摘要（'+text.length+' 字符），点击「翻译并分析词汇」。');}
+function fillFromSelection(){const s=window.getSelection();const t=s?s.toString().trim():'';if(!t||t.length<20)return toast('请先在页面上选中一段英文');const ta=$('trSource');if(!ta)return;ta.value=t;const p=selectedPaper();if(p){const rec=state.tr[p.id]||(state.tr[p.id]={});rec.source=t;}const c=$('trCount');if(c)c.textContent=t.length+' 字符';trSetStatus('已填入所选文本（'+t.length+' 字符）。');}
+function trResultHTML(rec){if(!rec||!rec.paragraphs||!rec.paragraphs.length)return '';const vocab=rec.vocab||[];const counts={};vocab.forEach(v=>{counts[v.tag]=(counts[v.tag]||0)+1;});const summary=Object.keys(counts).map(k=>k+' '+counts[k]).join(' · ');return '<div class="tr-meta"><span>引擎：'+safe(rec.engine||'—')+'</span><span>'+rec.paragraphs.length+' 段</span><span>'+vocab.length+' 个词汇候选</span><span class="tr-meta-actions"><button class="bare-btn" id="trCopyText">复制译文</button><button class="bare-btn" id="trCopyVocab">复制词表</button></span></div><div class="tr-result">'+rec.paragraphs.map((x,i)=>'<div class="tr-block"><div class="tr-block-label">段落 '+(i+1)+'</div><p class="tr-target">'+safe(x.out)+'</p><details class="tr-original"><summary>查看英文原文</summary><p>'+safe(x.src)+'</p></details></div>').join('')+'</div><div class="vocab-head"><h3>词汇简析</h3><span class="vocab-sum">'+safe(summary)+'</span></div><div class="vocab-wrap"><table class="vocab-table"><thead><tr><th>词</th><th>标注</th><th>释义与简析</th></tr></thead><tbody>'+vocab.map(v=>'<tr><td class="vocab-word">'+safe(v.word)+(v.count>1?' <sup>×'+v.count+'</sup>':'')+'</td><td><span class="lv lv-'+safe(v.cls)+'">'+safe(v.tag)+'</span></td><td>'+(v.pos?'<em>'+safe(v.pos)+'</em> ':'')+safe(v.zh)+(v.note?'<span class="vocab-note">'+safe(v.note)+'</span>':'')+'</td></tr>').join('')+'</tbody></table></div>';}
+function copyToClipboard(text,msg){const done=()=>toast(msg);if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(()=>legacyCopy(text,done));}else legacyCopy(text,done);}
+function legacyCopy(text,done){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){toast('复制失败，请手动选择文本');}ta.remove();}
+function copyTranslation(){const p=selectedPaper();const rec=p&&state.tr[p.id];if(!rec)return toast('还没有译文');copyToClipboard(rec.paragraphs.map(x=>x.out).join('\n\n'),'译文已复制');}
+function copyVocabulary(){const p=selectedPaper();const rec=p&&state.tr[p.id];if(!rec)return toast('还没有词表');copyToClipboard(rec.vocab.map(v=>v.word+'\t'+v.tag+'\t'+(v.pos||'')+'\t'+v.zh).join('\n'),'词表已复制');}
+function renderTranslate(p){const rec=state.tr[p.id]||{};return '<div class="notice info">整段翻译优先使用<strong>浏览器内置翻译</strong>（Chrome 138+，在本机运行，不上传原文）；不可用时自动改用在线翻译接口。词汇简析来自内置参考词库（专业 / CET4 / CET6 / IELTS），难度为近似标注，专业释义请结合原文核对。</div><div class="tr-panel"><div class="tr-toolbar"><span class="tr-label">ENGLISH PASSAGE / 待翻译段落</span><span class="tr-count" id="trCount">'+safe(rec.source?rec.source.length+' 字符':'')+'</span></div><textarea id="trSource" spellcheck="false" placeholder="粘贴英文摘要或段落……也可以先点下方「载入本篇英文摘要」。">'+safe(rec.source||'')+'</textarea><div class="tr-actions"><button class="link-btn secondary" id="trLoadAbstract">↧ 载入本篇英文摘要</button><button class="link-btn secondary" id="trFromSelection">✎ 用选中的文本</button><button class="solid-btn tr-run" id="trRun">译 · 翻译并分析词汇</button></div><div class="tr-status" id="trStatus"></div></div><div id="trOutput" class="tr-output">'+(rec.paragraphs?trResultHTML(rec):'')+'</div>';}
 function exportContext(){const p=selectedPaper();if(!p)return toast('请先选择文献'),null;const issue=state.issueData.find(i=>i.issue_id===p.__issue);if(!issue)return toast('找不到当前期次'),null;clearTimeout(saveTimer);saveTimer=null;commitNote();return {issue,p,n:noteFor(p.id),margins:marginFor(p.id)};}
 function plainLine(value){return String(value??'').replace(/\s+/g,' ').trim();}
 function mdText(value){return String(value??'').replace(/\r\n?/g,'\n').split('\n').map(line=>line.replace(/\\/g,'\\\\').replace(/([`*_{}\[\]<>|~])/g,'\\$1').replace(/^(\s{0,3})(#{1,6}\s|>\s?|[-+*]\s|\d+[.)]\s)/,(_,space,mark)=>space+'\\'+mark)).join('\n');}
@@ -847,12 +1418,14 @@ async function verifyDOI(){const p=selectedPaper();if(!p?.doi)return;const el=$(
 async function findOpenAccess(){const p=selectedPaper();if(!p?.doi)return;const status=$('originalStatus');status.textContent='正在查询 OpenAlex 的合法开放获取位置…';try{const endpoint='https://api.openalex.org/works/https://doi.org/'+encodeURI(p.doi);const r=await fetch(endpoint,{headers:{Accept:'application/json'}});if(!r.ok)throw Error('OpenAlex HTTP '+r.status);const data=await r.json();const locations=[data.best_oa_location,...(data.locations||[])].filter(Boolean);const pdf=locations.map(x=>x.pdf_url).find(x=>/^https?:\/\//i.test(x||''));const landing=locations.map(x=>x.landing_page_url).find(x=>/^https?:\/\//i.test(x||''));if(pdf){renderPdfUrl(pdf,'开放获取 PDF','oa');status.textContent='已查找到可能的开放获取 PDF。若浏览器无法内嵌显示，请点击下方「单独打开PDF」。PDF 阅读来自第三方服务，并未复制进本站。';}
  else{status.textContent='OpenAlex 暂未提供可直接嵌入的开放获取 PDF。可从出版页面阅读，或上传已合法获得的 PDF。';$('originalFrame').innerHTML=`<div class="blank-frame"><div><strong>暂无可嵌入 PDF</strong>找到的开放入口：${landing?`<a href="${safe(landing)}" target="_blank" rel="noopener noreferrer">打开开放页面 ↗</a>`:'无'}<br>请使用 DOI 或导入本机 PDF。</div></div>`;}
  }catch(e){status.textContent='当前无法连接 OpenAlex：'+e.message+'。可以点击 DOI，或上传本机 PDF。';}}
-function renderPdfUrl(url,label,origin='remote'){state.readerUrl=url;const el=$('originalFrame');el.innerHTML=`<iframe class="pdf-frame" src="${safe(url)}" title="${safe(label)}" referrerpolicy="no-referrer"></iframe><div class="link-row"><a class="link-btn" href="${safe(url)}" target="_blank" rel="noopener noreferrer">↗ 单独打开 ${safe(label)}</a></div><div class="original-hint">提示：某些开放 PDF 服务器禁止第三方网站嵌入。此时 iframe 可能空白，但单独打开链接通常仍可访问。</div>`;}
+function renderPdfUrl(url,label,origin='remote'){state.readerUrl=url;state.pdfPage=1;const el=$('originalFrame');el.innerHTML=`<iframe class="pdf-frame" src="${safe(url)}" title="${safe(label)}" referrerpolicy="no-referrer"></iframe><div class="link-row"><a class="link-btn" href="${safe(url)}" target="_blank" rel="noopener noreferrer">↗ 单独打开 ${safe(label)}</a></div><div class="original-hint">提示：某些开放 PDF 服务器禁止第三方网站嵌入。此时 iframe 可能空白，但单独打开链接通常仍可访问。</div>`;const bar=$('pdfPageBar');if(bar)bar.classList.remove('hidden');updatePdfPageUI();}
 // Store uploaded PDFs in IndexedDB on the same device. PDF bytes are not part of JSON backups.
 function pdfDB(){return new Promise((resolve,reject)=>{if(!window.indexedDB)return reject(Error('此浏览器不支持 IndexedDB'));const req=indexedDB.open('archaea-papers',1);req.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains('pdfs'))db.createObjectStore('pdfs');};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
 async function saveLocalPdf(p,file){const db=await pdfDB();await new Promise((resolve,reject)=>{const tx=db.transaction('pdfs','readwrite');tx.objectStore('pdfs').put(file,p.id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close();state.pdfMeta[p.id]={name:file.name,size:file.size,saved:stamp()};saveJSON('pdfmeta',state.pdfMeta);toast('本机 PDF 已导入当前浏览器，仅在本设备可用。');await loadLocalPdf(p);}
 async function loadLocalPdf(p){if(!p||state.mode!=='original')return;const db=await pdfDB();const blob=await new Promise((resolve,reject)=>{const req=db.transaction('pdfs','readonly').objectStore('pdfs').get(p.id);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});db.close();if(blob){const u=URL.createObjectURL(blob);if(state.readerUrl?.startsWith('blob:'))URL.revokeObjectURL(state.readerUrl);renderPdfUrl(u,state.pdfMeta[p.id]?.name||'本机PDF','local');$('originalStatus').textContent='已加载本机 PDF：'+(state.pdfMeta[p.id]?.name||'未命名文件')+'。文件保存在当前设备的浏览器存储中。';}}
-function setMobile(which){state.mobile=which;document.querySelector('.app').classList.remove('mobile-archive','mobile-reader','mobile-notes');document.querySelector('.app').classList.add('mobile-'+which);document.querySelectorAll('[data-mobile]').forEach(x=>x.classList.toggle('active',x.dataset.mobile===which));}
+function setMobile(which){state.mobile=which;setNotesPanel(false);document.querySelector('.app').classList.remove('mobile-archive','mobile-reader','mobile-notes');document.querySelector('.app').classList.add('mobile-'+which);document.querySelectorAll('[data-mobile]').forEach(x=>x.classList.toggle('active',x.dataset.mobile===which));}
+function setNotesPanel(open){const appEl=document.querySelector('.app');appEl.classList.toggle('notes-open',!!open);const tab=$('notesTab');if(tab){tab.classList.toggle('active',!!open);tab.setAttribute('aria-expanded',String(!!open));}}
+function toggleNotesPanel(){setNotesPanel(!document.querySelector('.app').classList.contains('notes-open'));}
 function initEvents(){
  $('archiveList').addEventListener('click',e=>{const b=e.target.closest('[data-select]');if(b)activatePaper(b.dataset.select,b.dataset.issue);});
  $('searchInput').addEventListener('input',e=>{state.search=e.target.value;renderArchive();});$('clearSearch').onclick=()=>{$('searchInput').value='';state.search='';renderArchive();};$('dateSortBtn').onclick=()=>{state.newest=!state.newest;$('dateSortBtn').textContent=state.newest?'日期 ↓':'日期 ↑';renderArchive();};
@@ -864,10 +1437,11 @@ function initEvents(){
  $('readingState').onchange=queueNoteSave;$('personalRating').onchange=queueNoteSave;['noteSummary','noteMethods','noteIdeas'].forEach(id=>$(id).addEventListener('input',queueNoteSave));
  $('saveRevision').onclick=saveRevision;$('showHistory').onclick=()=>{state.historyOpen=!state.historyOpen;renderHistory();};$('historyList').addEventListener('click',e=>{const b=e.target.closest('[data-restore]'),p=selectedPaper();if(!b||!p)return;const rev=(state.revisions[p.id]||[]).find(x=>x.id===b.dataset.restore);if(rev){if(!confirm('将此旧版的内容恢复到当前编辑框？恢复前会自动保留当前笔记快照。'))return;saveRevision();state.notes[p.id]=JSON.parse(JSON.stringify(rev.note));saveJSON('notes',state.notes);renderNotes();toast('已恢复历史版本；恢复前的笔记也已保存。');}});
  $('importBtn').onclick=()=>$('importInput').click();$('importInput').onchange=e=>importFiles(e.target.files);$('exportBtn').onclick=markdownIssue;$('printBtn').onclick=printSelected;$('backupBtn').onclick=exportBackup;
- $('paperSurface').addEventListener('click',async e=>{const t=e.target.closest('button');if(!t)return;const p=selectedPaper();switch(t.id){case 'findOA':await findOpenAccess();break;case 'localPdfBtn':$('pdfInput').click();break;case 'addPdfQuoteBtn':openMargin();break;case 'verifyDoiBtn':await verifyDOI();break;case 'issueExportBtn':markdownIssue();break;}});
+ $('paperSurface').addEventListener('click',async e=>{const para=e.target.closest('.src-para[data-src-index]');if(para){const p=selectedPaper();if(p){const rec=state.src[p.id];const idx=Number(para.dataset.srcIndex);const txt=rec&&rec.paragraphs?rec.paragraphs[idx]:'';if(txt)openMargin(null,txt,para.dataset.locator);}return;}const pageBtn=e.target.closest('[data-pdfpage]');if(pageBtn){pdfGo(Number(pageBtn.dataset.pdfpage));return;}const t=e.target.closest('button');if(!t)return;const p=selectedPaper();switch(t.id){case 'findOA':await findOpenAccess();break;case 'localPdfBtn':$('pdfInput').click();break;case 'addPdfQuoteBtn':openMargin();break;case 'verifyDoiBtn':await verifyDOI();break;case 'issueExportBtn':markdownIssue();break;case 'trRun':await runTranslation();break;case 'trLoadAbstract':await loadPaperAbstract();break;case 'trFromSelection':fillFromSelection();break;case 'trCopyText':copyTranslation();break;case 'trCopyVocab':copyVocabulary();break;case 'annotatePdfPage':annotatePdfPage();break;case 'loadSrcAbstract':await loadSourceAbstract();break;case 'showSrcPaste':toggleSrcPaste();break;case 'segmentSrc':segmentSrcText();break;case 'cancelSrcPaste':toggleSrcPaste(false);break;}});
+ $('paperSurface').addEventListener('input',e=>{if(e.target&&e.target.id==='trSource'){const p=selectedPaper();if(p){const rec=state.tr[p.id]||(state.tr[p.id]={});rec.source=e.target.value;}const c=$('trCount');if(c)c.textContent=e.target.value.length+' 字符';}});
  $('pdfInput').onchange=async e=>{const f=e.target.files?.[0],p=selectedPaper();if(f&&p){if(f.type!=='application/pdf'&&!f.name.toLowerCase().endsWith('.pdf'))return toast('请选择 PDF 文件');try{await saveLocalPdf(p,f)}catch(e){toast('无法保存 PDF：'+e.message)}}$('pdfInput').value='';};
- document.querySelectorAll('[data-mobile]').forEach(b=>b.onclick=()=>setMobile(b.dataset.mobile));
- window.addEventListener('keydown',e=>{if(e.key==='Escape')closeMargin();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveRevision();}});
+ document.querySelectorAll('[data-mobile]').forEach(b=>b.onclick=()=>setMobile(b.dataset.mobile));$('notesTab').onclick=toggleNotesPanel;
+ window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMargin();setNotesPanel(false);}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveRevision();}});
  window.addEventListener('beforeprint',()=>{preparePrint();});window.addEventListener('afterprint',()=>{$('printSheet').innerHTML='';});
  window.addEventListener('beforeunload',()=>{if(saveTimer)commitNote();});
 }

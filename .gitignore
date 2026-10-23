@@ -1,15 +1,25 @@
+﻿# 本地备份、导出文件与旧版本打包
 *.zip
+_archive/
+*.pdf
 *.bak
 *.backup
-*.pdf
+archaea-*.json
+archaea-备份*.json
+*backup*.json
+*notes*.json
+*annotation*.json
+
+# 凭据
 .env
 .env.*
 *.key
 *.pem
 *.p12
-*backup*.json
-*notes*.json
-*annotation*.json
+
+# 工具与缓存
 node_modules/
+__pycache__/
+*.pyc
 .DS_Store
 Thumbs.db
