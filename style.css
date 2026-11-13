@@ -163,3 +163,8 @@ body.dropping .drop-hint{display:flex}
 .src-heading .src-para-text{font-weight:700;font-size:1.08em}.src-heading{background:#faf9f5}.import-meta-check{margin-top:12px}.import-meta-check .src-hint{font-size:11px;line-height:1.7;overflow-wrap:anywhere}.src-para-text{overflow-wrap:anywhere}
 
 .modal #impTitle{min-height:54px}.modal #impAuthors{min-height:64px}
+
+.export-dialog{border:0;color:var(--ink);max-width:min(560px,calc(100vw - 32px))}
+.export-dialog::backdrop{background:#223c437c}
+.export-dialog .import-file{overflow-wrap:anywhere}
+@media print{.export-dialog{display:none!important}}
