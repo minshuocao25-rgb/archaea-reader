@@ -11,13 +11,25 @@ const doiUrl=(d)=>'https://doi.org/'+encodeURI(String(d||'').replace(/^https?:\/
 function loadJSON(k,fallback){try{const x=localStorage.getItem(PREFIX+k);return x?JSON.parse(x):fallback;}catch(e){return fallback;}}
 function saveJSON(k,obj){try{localStorage.setItem(PREFIX+k,JSON.stringify(obj));return true;}catch(e){toast('浏览器存储空间不足。请立即导出备份，或减少导入文件。');return false;}}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('visible'),3200);}
-const state={issueData:loadJSON('issues',seed.issues||[]),notes:loadJSON('notes',{}),margins:loadJSON('margins',{}),revisions:loadJSON('revisions',{}),pdfMeta:loadJSON('pdfmeta',{}),mode:'analysis',selected:null,issue:null,search:'',newest:true,editingMargin:null,mobile:'reader',historyOpen:false,readerUrl:null,loadingFulltext:false,tr:{},src:{},pdfPage:1,pdfView:'text',trcache:loadJSON('trcache',{})};
+function mergePublishedIssues(cached,published){
+ const m=new Map((Array.isArray(cached)?cached:[]).filter(x=>x&&x.issue_id).map(x=>[x.issue_id,x]));
+ for(const issue of (published||[])){
+  const old=m.get(issue.issue_id);
+  if(!old){m.set(issue.issue_id,issue);continue;}
+  const ps=new Map((old.papers||[]).map(p=>[String(p.doi||p.id||'').toLowerCase(),p]));
+  for(const p of (issue.papers||[])){const key=String(p.doi||p.id||'').toLowerCase();ps.set(key,{...(ps.get(key)||{}),...p});}
+  m.set(issue.issue_id,{...old,...issue,papers:[...ps.values()]});
+ }
+ return [...m.values()];
+}
+const state={issueData:mergePublishedIssues(loadJSON('issues',seed.issues||[]),seed.issues||[]),notes:loadJSON('notes',{}),margins:loadJSON('margins',{}),revisions:loadJSON('revisions',{}),pdfMeta:loadJSON('pdfmeta',{}),mode:'analysis',selected:null,issue:null,search:'',newest:true,editingMargin:null,mobile:'reader',historyOpen:false,readerUrl:null,loadingFulltext:false,tr:{},src:{},pdfPage:1,pdfView:'text',trcache:loadJSON('trcache',{})};
+if(!loadJSON('issues',null)||JSON.stringify(loadJSON('issues',[]))!==JSON.stringify(state.issueData))saveJSON('issues',state.issueData);
 let saveTimer=null;let revisionTimer=null;let toastTimer=null;let lastSelection='';
 const paperList=()=>state.issueData.flatMap(issue=>(issue.papers||[]).map(p=>({...p,__issue:issue.issue_id,__issueDate:issue.date})));
 const noteFor=(key)=>state.notes[key]||{summary:'',methods:'',ideas:'',status:'unread',rating:'',updated:null};
 const marginFor=(key)=>state.margins[key]||[];
 function selectedPaper(){return paperList().find(p=>p.__issue===state.issue&&p.id===state.selected)||paperList().find(p=>p.id===state.selected)||null;}
-function issueCode(issue){if(issue.issue_id==='local-imports')return 'IMPORT';const n=Number(issue.issue_number);return 'NO.'+String(Number.isFinite(n)&&n>0?n:issue.date?.slice(-2)||'—').padStart(3,'0');}
+function issueCode(issue){if(issue.origin==='historical_compilation')return '专题';if(issue.issue_id==='local-imports')return 'IMPORT';const n=Number(issue.issue_number);return 'NO.'+String(Number.isFinite(n)&&n>0?n:issue.date?.slice(-2)||'—').padStart(3,'0');}
 function labels(p){return {title:p.title||'未命名论文',date:showDate(p.date),authors:Array.isArray(p.authors)?p.authors.join('、'):String(p.authors||''),journal:p.journal||'未收录期刊',kind:p.kind==='docx'?'DOCX':(p.kind==='pdf'?'PDF':(p.kind||'文献类型待核验')),reading:p.reading_status||'来源批注未提供核读状态'};}
 function activatePaper(id,issue){commitNote();clearSourceFigureUrls();const target=paperList().find(p=>p.id===id&&p.__issue===(issue||state.issue))||paperList().find(p=>p.id===id);if(state.readerUrl&&String(state.readerUrl).startsWith('blob:')){try{URL.revokeObjectURL(state.readerUrl);}catch(e){}}state.selected=id;state.issue=issue||state.issue;state.mode=(target&&target.source==='import')?'original':'analysis';state.readerUrl=null;state.pdfPage=1;state.pdfView='text';state.historyOpen=false;try{localStorage.setItem(PREFIX+'active',JSON.stringify({id,issue:state.issue}));}catch(e){}render();setMobile('reader');$('centerCol').scrollTop=0;if(target&&target.source==='import'){loadStoredDocument(target);if(target.kind==='pdf')ensureImportedPdfUrl(target);}}
 function normalizedIssues(){let a=[...state.issueData];a.sort((x,y)=>String(x.date).localeCompare(y.date)*(state.newest?-1:1));return a;}
@@ -425,6 +437,151 @@ function safeLink(value){try{const u=new URL(String(value||''));return ['https:'
 function mdLink(label,url){return url?`[${mdText(label)}](<${url.replace(/>/g,'%3E')}>)`:'未提供';}
 function filePart(value){let name=plainLine(value).replace(/[<>:"/\\|?*\x00-\x1F]/g,'-').replace(/[. ]+$/g,'').slice(0,68).replace(/[. ]+$/g,'');if(!name||/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i.test(name))name='paper';return name;}
 function markdownIssue(){const ctx=exportContext();if(!ctx)return;const {issue,p,n,margins}=ctx;const title=issue.title||ISSUE_TITLE,source=safeLink(p.url)||safeLink(p.doi?doiUrl(p.doi):''),doi=safeLink(p.doi?doiUrl(p.doi):'');let lines=[`# ${mdText(plainLine(title))}`,'',`- **期号**：${mdText(plainLine(issue.issue_id))}`,`- **日期**：${mdText(plainLine(issue.date))}`,'',`## ${mdText(plainLine(p.title||'未命名论文'))}`,'',`- **作者**：${mdText(plainLine(labels(p).authors))}`,`- **期刊 / 平台**：${mdText(plainLine(p.journal))}`,`- **发表日期**：${mdText(plainLine(p.date))}`,`- **文献类型**：${mdText(plainLine(p.kind))}`,`- **DOI**：${p.doi?mdLink(p.doi,doi):'未提供'}`,`- **来源链接**：${mdLink('打开来源',source)}`,`- **核读范围**：${mdText(plainLine(p.reading_status||'未记录'))}`,`- **书目核验**：${mdText(plainLine(p.verification||'未记录'))}`,`- **归档提示**：${mdText(plainLine(p.notice||'无'))}`,`- **我的阅读状态**：${mdText(STATUS_LABELS[n.status]||'待读')}`,`- **个人评级**：${mdText(n.rating||'未评级')}`,''];for(const [heading,key] of RESEARCH_SECTIONS){if(p[key])lines.push(`### ${heading}`,'',mdText(p[key]),'');}lines.push('## 我的研究笔记','',`### 研究摘要`,'',mdText(n.summary||'（暂无）'),'','### 方法与疑问','',mdText(n.methods||'（暂无）'),'','### 研究想法','',mdText(n.ideas||'（暂无）'),'','## 我的边注','');if(!margins.length)lines.push('（暂无）','');else margins.forEach((m,i)=>{lines.push(`### 边注 ${i+1} · ${MARGIN_LABELS[m.kind]||'边注'}`,'',`- **定位**：${mdText(plainLine(m.locator||'未定位'))}`,'',`**摘录**`,'',mdText(m.quote||'（无摘录）'),'','**批注**','',mdText(m.comment||'（无批注）'),'');});const filename=`ARCHAEA_${filePart(issue.issue_id)}_${filePart(p.title||p.doi)}.md`;download(filename,'\uFEFF'+lines.join('\n').trimEnd()+'\n','text/markdown;charset=utf-8');toast('已导出当前论文及笔记的 Markdown。');}
+
+function obsidianDoi(value){
+ let doi=plainLine(value).replace(/^doi:\s*/i,'');
+ if(/^https?:\/\/(?:dx\.)?doi\.org\//i.test(doi)){
+  try{doi=decodeURIComponent(new URL(doi).pathname.slice(1));}
+  catch(e){return '';}
+ }
+ return /^10\.\d{4,}\/\S+$/i.test(doi)?doi.toLowerCase():'';
+}
+function obsidianSourceInfo(p){
+ const doi=obsidianDoi(p.doi);
+ const doiLink=doi?'https://doi.org/'+doi.split('/').map(encodeURIComponent).join('/'):'';
+ const source=safeLink(p.url)||doiLink;
+ const title=plainLine(p.title)||'未命名文献';
+ const fingerprint=JSON.stringify([title,plainLine(labels(p).authors),plainLine(p.journal),plainLine(p.date)]
+  .map(value=>value.normalize('NFKC').toLowerCase()));
+ const key=doi?'doi:'+doi:'bibliography:'+trHash(fingerprint);
+ const filename='来源 - '+filePart(doi||title)+' - '+trHash(doi||fingerprint)+'.md';
+ return {doi,doiLink,source,title,key,filename};
+}
+function obsidianLinks(value){
+ const names=String(value||'').split(/\r?\n/).map(line=>plainLine(line)
+  .replace(/^\[\[(.*?)\]\]$/,'$1').replace(/\.md$/i,''));
+ return [...new Set(names.filter(name=>name&&!/[\[\]#|^\\<>:*?]/.test(name)))];
+}
+function obsidianReaderExcerpts(p,margins){
+ const rec=state.src[p.id];
+ if(!rec?.paragraphs?.length)return [];
+ const locators=new Set(margins.map(m=>m.locator).filter(Boolean));
+ const currentProfile=rec.translationProfile===translationProfile();
+ return rec.paragraphs.flatMap((text,index)=>{
+  const locator=rec.locs?.[index]||((rec.label||'原文')+' ¶'+(index+1));
+  if(!locators.has(locator))return [];
+  // A manually supplied locator may refer to a different document segment.
+  const matching=margins.some(m=>m.locator===locator&&
+   (!plainLine(m.quote)||plainLine(text).includes(plainLine(m.quote))));
+  if(!matching)return [];
+  const translation=(currentProfile&&rec.translations?.[index])||trCacheGet(text,translationContext(p,index,rec));
+  return [{locator,text,translation}];
+ });
+}
+function obsidianMarkdown(ctx,options){
+ const {issue,p,n,margins}=ctx;
+ const {doi,doiLink,source,title,key,filename}=obsidianSourceInfo(p);
+ const props=['---','type: "source"','domains: []','aliases: '+JSON.stringify([title])];
+ if(doi)props.push('doi: '+JSON.stringify(doi));
+ if(source)props.push('source_url: '+JSON.stringify(source));
+ props.push('archaea_id: '+JSON.stringify(key),'---','');
+ const lines=[...props,'# '+mdText(title),'','## 书目信息',''];
+ function field(label,value){
+  if(value)lines.push('- **'+label+'**：'+mdText(plainLine(value)));
+ }
+ function section(label,value){
+  if(plainLine(value))lines.push('### '+label,'',mdText(String(value).trim()),'');
+ }
+ function quote(label,value){
+  if(plainLine(value))lines.push('**'+label+'**','',...mdText(String(value).trim()).split('\n').map(line=>'> '+line),'');
+ }
+ field('作者',labels(p).authors);
+ field('期刊 / 来源',p.journal);
+ field('发表日期',p.date);
+ if(doi)lines.push('- **DOI**：'+mdLink(doi,doiLink));
+ if(source)lines.push('- **原始来源**：'+mdLink('打开来源',source));
+ field('ARCHAEA 收录期次',issue.issue_id);
+ field('ARCHAEA 核读范围',p.reading_status||'未记录');
+ field('历史书目核验',p.verification);
+ field('我的阅读状态',STATUS_LABELS[n.status]);
+ field('个人评级',n.rating);
+ lines.push('','## 问题与材料','');
+ section('ARCHAEA · 研究问题',p.question);
+ section('ARCHAEA · 研究材料',p.materials);
+ lines.push('## 方法与结果','');
+ section('ARCHAEA · 实验设计',p.design);
+ section('ARCHAEA · 方法流程',p.methods);
+ section('ARCHAEA · 主要结果',p.results);
+ section('ARCHAEA · 方法学创新',p.innovation);
+ lines.push('## 证据和解释边界','');
+ section('ARCHAEA · 局限与竞争解释',p.limitations);
+ section('ARCHAEA · 归档提示',p.notice);
+ lines.push('## 可复用笔记','');
+ const links=obsidianLinks(options.links);
+ if(links.length)lines.push(...links.map(name=>'- [['+name+']]'),'');
+ section('ARCHAEA · 后续价值',p.future);
+ section('ARCHAEA · 学习重点',p.learning);
+ if([n.summary,n.methods,n.ideas].some(plainLine)){
+  lines.push('## 我的研究笔记','');
+  section('研究摘要',n.summary);
+  section('方法与疑问',n.methods);
+  section('研究想法',n.ideas);
+ }
+ if(margins.length){
+  lines.push('## 我的边注','');
+  margins.forEach((m,index)=>{
+   lines.push('### '+(index+1)+' · '+(MARGIN_LABELS[m.kind]||'边注'),'');
+   field('定位',m.locator||'未定位');
+   field('原定位',m.previous_locator);
+   lines.push('');
+   quote('摘录',m.quote);
+   quote('我的批注',m.comment);
+  });
+ }
+ if(options.original||options.translation){
+  const reader=obsidianReaderExcerpts(p,margins);
+  const panel=(state.tr[p.id]?.paragraphs||[]).map((para,index)=>({
+   locator:'翻译面板 · 段落 '+(index+1)+'（原文页码未记录）',
+   text:para.src,translation:para.out
+  }));
+  const excerpts=[...reader,...panel].filter(item=>
+   (options.original&&plainLine(item.text))||(options.translation&&plainLine(item.translation)));
+  if(excerpts.length){
+   lines.push('## 原文与机器译文','');
+   for(const item of excerpts){
+    lines.push('### '+mdText(plainLine(item.locator)),'');
+    if(options.original)quote('原文',item.text);
+    if(options.translation)quote('机器译文（待与原文核对）',item.translation);
+   }
+  }
+ }
+ return {filename,content:lines.join('\n').trimEnd()+'\n'};
+}
+function openMarkdownExport(){
+ const p=selectedPaper();
+ if(!p)return toast('请先选择文献');
+ const info=obsidianSourceInfo(p);
+ $('exportFileName').textContent=info.filename;
+ $('exportIdentityHint').textContent=info.doi
+  ?'入库时先用 DOI 搜索 20-来源。已有笔记时，把新增内容合并进去。'
+  :'没有 DOI，入库前请用题名和作者核对是否已有来源笔记。';
+ $('exportLinks').value='';
+ $('exportOriginal').checked=false;
+ $('exportTranslation').checked=false;
+ $('markdownExportDialog').showModal();
+}
+function exportObsidian(){
+ const ctx=exportContext();
+ if(!ctx)return;
+ const {filename,content}=obsidianMarkdown(ctx,{
+  links:$('exportLinks').value,
+  original:$('exportOriginal').checked,
+  translation:$('exportTranslation').checked
+ });
+ download(filename,content,'text/markdown;charset=utf-8');
+ $('markdownExportDialog').close();
+ toast('已下载 Obsidian 来源笔记，可放入 20-来源。');
+}
 function printText(value){return safe(value||'（暂无）');}
 function printSection(title,value){return value?`<section class="print-section"><h3>${safe(title)}</h3><div class="print-body">${safe(value)}</div></section>`:'';}
 function preparePrint(ctx=exportContext()){if(!ctx)return false;const {issue,p,n,margins}=ctx;const title=issue.title||ISSUE_TITLE,source=safeLink(p.url)||safeLink(p.doi?doiUrl(p.doi):''),doi=safeLink(p.doi?doiUrl(p.doi):'');const row=(label,value)=>`<div class="print-meta-row"><strong>${safe(label)}</strong><span>${safe(value||'未提供')}</span></div>`;$('printSheet').innerHTML=`<header class="print-header"><div class="print-brand">ARCHAEA · 文献阅读台</div><h1>${safe(title)}</h1><p>${safe(issue.issue_id)} · ${safe(issue.date)}</p></header><h2>${safe(p.title||'未命名论文')}</h2><div class="print-meta">${row('作者',labels(p).authors)}${row('期刊 / 平台',p.journal)}${row('发表日期',p.date)}${row('文献类型',p.kind)}${row('DOI',p.doi)}${doi?`<div class="print-meta-row"><strong>DOI 链接</strong><a href="${safe(doi)}">${safe(doi)}</a></div>`:''}${source?`<div class="print-meta-row"><strong>来源链接</strong><a href="${safe(source)}">${safe(source)}</a></div>`:''}${row('核读范围',p.reading_status||'未记录')}${row('书目核验',p.verification||'未记录')}${row('归档提示',p.notice||'无')}${row('我的阅读状态',STATUS_LABELS[n.status]||'待读')}${row('个人评级',n.rating||'未评级')}</div><div class="print-research">${RESEARCH_SECTIONS.map(([heading,key])=>printSection(heading,p[key])).join('')}</div><section class="print-personal"><h2>我的研究笔记</h2>${printSection('研究摘要',n.summary||'（暂无）')}${printSection('方法与疑问',n.methods||'（暂无）')}${printSection('研究想法',n.ideas||'（暂无）')}</section><section class="print-personal"><h2>我的边注</h2>${margins.length?margins.map((m,i)=>`<section class="print-margin"><h3>边注 ${i+1} · ${safe(MARGIN_LABELS[m.kind]||'边注')} · ${safe(m.locator||'未定位')}</h3><div class="print-body"><strong>摘录</strong><br>${printText(m.quote)}<br><strong>批注</strong><br>${printText(m.comment)}</div></section>`).join(''):'<p>（暂无）</p>'}</section>`;return true;}
@@ -541,7 +698,10 @@ function initEvents(){
  $('closeModal').onclick=closeMargin;$('cancelModal').onclick=closeMargin;$('submitMargin').onclick=saveMargin;$('deleteMargin').onclick=deleteMargin;$('marginModal').onclick=e=>{if(e.target.id==='marginModal')closeMargin();};
  $('readingState').onchange=queueNoteSave;$('personalRating').onchange=queueNoteSave;['noteSummary','noteMethods','noteIdeas'].forEach(id=>$(id).addEventListener('input',queueNoteSave));
  $('saveRevision').onclick=saveRevision;$('showHistory').onclick=()=>{state.historyOpen=!state.historyOpen;renderHistory();};$('historyList').addEventListener('click',e=>{const b=e.target.closest('[data-restore]'),p=selectedPaper();if(!b||!p)return;const rev=(state.revisions[p.id]||[]).find(x=>x.id===b.dataset.restore);if(rev){if(!confirm('将此旧版的内容恢复到当前编辑框？恢复前会自动保留当前笔记快照。'))return;saveRevision();state.notes[p.id]=JSON.parse(JSON.stringify(rev.note));saveJSON('notes',state.notes);renderNotes();toast('已恢复历史版本；恢复前的笔记也已保存。');}});
- $('importBtn').onclick=()=>$('importInput').click();$('importInput').onchange=e=>importFiles(e.target.files);$('exportBtn').onclick=markdownIssue;$('printBtn').onclick=printSelected;$('backupBtn').onclick=exportBackup;
+ $('importBtn').onclick=()=>$('importInput').click();$('importInput').onchange=e=>importFiles(e.target.files);$('exportBtn').onclick=openMarkdownExport;$('printBtn').onclick=printSelected;$('backupBtn').onclick=exportBackup;
+ $('closeMarkdownExport').onclick=()=>$('markdownExportDialog').close();
+ $('downloadPlainMarkdown').onclick=()=>{markdownIssue();$('markdownExportDialog').close();};
+ $('downloadObsidian').onclick=exportObsidian;
  $('paperDeleteBtn').onclick=openDeleteImportedPaper;$('cancelDeletePaper').onclick=closeDeletePaperModal;$('closeDeletePaper').onclick=closeDeletePaperModal;$('confirmDeletePaper').onclick=confirmDeleteImportedPaper;$('deletePaperModal').onclick=e=>{if(e.target.id==='deletePaperModal')closeDeletePaperModal();};
  $('paperImportBtn').onclick=()=>$('paperInput').click();$('paperInput').onchange=e=>{const f=e.target.files&&e.target.files[0];if(f)startPaperImport(f);e.target.value='';};
  $('closePaperModal').onclick=closePaperModal;$('cancelPaperImport').onclick=closePaperModal;$('confirmPaperImport').onclick=confirmPaperImport;$('verifyImportMeta').onclick=e=>verifyImportMetadata(e.currentTarget);$('paperModal').addEventListener('click',e=>{if(e.target.id==='paperModal')closePaperModal();});
@@ -549,14 +709,14 @@ function initEvents(){
  document.addEventListener('dragleave',e=>{if(!e.relatedTarget)document.body.classList.remove('dropping');});
  document.addEventListener('drop',e=>{const files=e.dataTransfer&&e.dataTransfer.files;if(files&&files.length){e.preventDefault();document.body.classList.remove('dropping');startPaperImport(files[0]);}});
  document.addEventListener('paste',e=>{const files=e.clipboardData&&e.clipboardData.files;if(files&&files.length){const f=files[0];if(/\.(pdf|docx)$/i.test(f.name)){e.preventDefault();startPaperImport(f);}}});
- $('paperSurface').addEventListener('click',async e=>{const t=e.target.closest('button');const para=e.target.closest('.src-para[data-src-index]');if(para&&!t){const b=para.querySelector('[data-annotate]');if(b){toggleSourceComposer(b);return;}}if(!t)return;const p=selectedPaper();if(t.dataset.annotate!==undefined){toggleSourceComposer(t);return;}if(t.dataset.saveAnnotation!==undefined){saveInlineAnnotation(p,Number(t.dataset.saveAnnotation));return;}if(t.dataset.cancelAnnotation!==undefined){hideSourceComposer(t);return;}if(t.dataset.delAnnotation){deleteInlineMargin(p,t.dataset.delAnnotation);return;}if(t.matches('[data-tr-test]')){await testModelConnection(t);return;}if(t.matches('[data-tr-save]')){saveReaderSettings();return;}const pageBtn=e.target.closest('[data-pdfpage]');if(pageBtn){pdfGo(Number(pageBtn.dataset.pdfpage));return;}switch(t.id){case 'findOA':await findOpenAccess();break;case 'localPdfBtn':$('pdfInput').click();break;case 'togglePdfView':state.pdfView=state.pdfView==='frame'?'text':'frame';if(state.pdfView==='frame')loadLocalPdf(p).catch(()=>{});renderMain();break;case 'addPdfQuoteBtn':openMargin();break;case 'verifyDoiBtn':await verifyDOI();break;case 'issueExportBtn':markdownIssue();break;case 'trRun':await runTranslation();break;case 'trLoadAbstract':await loadPaperAbstract();break;case 'trFromSelection':fillFromSelection();break;case 'trCopyText':copyTranslation();break;case 'trCopyVocab':copyVocabulary();break;case 'annotatePdfPage':annotatePdfPage();break;case 'loadSrcAbstract':await loadSourceAbstract();break;case 'showSrcPaste':toggleSrcPaste();break;case 'segmentSrc':segmentSrcText();break;case 'resegmentPdf':await resegmentStoredPdf();break;case 'cancelSrcPaste':toggleSrcPaste(false);break;}});
+ $('paperSurface').addEventListener('click',async e=>{const t=e.target.closest('button');const para=e.target.closest('.src-para[data-src-index]');if(para&&!t){const b=para.querySelector('[data-annotate]');if(b){toggleSourceComposer(b);return;}}if(!t)return;const p=selectedPaper();if(t.dataset.annotate!==undefined){toggleSourceComposer(t);return;}if(t.dataset.saveAnnotation!==undefined){saveInlineAnnotation(p,Number(t.dataset.saveAnnotation));return;}if(t.dataset.cancelAnnotation!==undefined){hideSourceComposer(t);return;}if(t.dataset.delAnnotation){deleteInlineMargin(p,t.dataset.delAnnotation);return;}if(t.matches('[data-tr-test]')){await testModelConnection(t);return;}if(t.matches('[data-tr-save]')){saveReaderSettings();return;}const pageBtn=e.target.closest('[data-pdfpage]');if(pageBtn){pdfGo(Number(pageBtn.dataset.pdfpage));return;}switch(t.id){case 'findOA':await findOpenAccess();break;case 'localPdfBtn':$('pdfInput').click();break;case 'togglePdfView':state.pdfView=state.pdfView==='frame'?'text':'frame';if(state.pdfView==='frame')loadLocalPdf(p).catch(()=>{});renderMain();break;case 'addPdfQuoteBtn':openMargin();break;case 'verifyDoiBtn':await verifyDOI();break;case 'issueExportBtn':openMarkdownExport();break;case 'trRun':await runTranslation();break;case 'trLoadAbstract':await loadPaperAbstract();break;case 'trFromSelection':fillFromSelection();break;case 'trCopyText':copyTranslation();break;case 'trCopyVocab':copyVocabulary();break;case 'annotatePdfPage':annotatePdfPage();break;case 'loadSrcAbstract':await loadSourceAbstract();break;case 'showSrcPaste':toggleSrcPaste();break;case 'segmentSrc':segmentSrcText();break;case 'resegmentPdf':await resegmentStoredPdf();break;case 'cancelSrcPaste':toggleSrcPaste(false);break;}});
  $('paperSurface').addEventListener('input',e=>{if(e.target&&e.target.id==='trSource'){const p=selectedPaper();if(p){const rec=state.tr[p.id]||(state.tr[p.id]={});rec.source=e.target.value;}const c=$('trCount');if(c)c.textContent=e.target.value.length+' 字符';}});
  $('paperSurface').addEventListener('paste',e=>{if(e.target&&e.target.id==='srcPaste'){setTimeout(()=>{const ta=$('srcPaste');if(ta&&ta.value.trim().length>40)segmentSrcText();},60);}});
  $('paperSurface').addEventListener('keydown',e=>{if(e.target&&e.target.id==='srcPaste'&&(e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();segmentSrcText();}});
  $('paperSurface').addEventListener('change',e=>{if(e.target.matches('[data-tr-engine]')){const box=e.target.closest('.src-settings');const api=box&&box.querySelector('[data-tr-api]');if(api)api.classList.toggle('hidden',e.target.value!=='api');}});
  $('pdfInput').onchange=async e=>{const f=e.target.files?.[0],p=selectedPaper();if(f&&p){if(f.type!=='application/pdf'&&!f.name.toLowerCase().endsWith('.pdf'))return toast('请选择 PDF 文件');try{const buf=await f.arrayBuffer();state.pdfView='frame';await saveLocalPdf(p,f);await extractAndShowPdf(p,buf,f.name);}catch(err){toast('无法处理 PDF：'+(err&&err.message?err.message:err));}}$('pdfInput').value='';};
  document.querySelectorAll('[data-mobile]').forEach(b=>b.onclick=()=>setMobile(b.dataset.mobile));$('notesTab').onclick=toggleNotesPanel;
- window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMargin();setNotesPanel(false);}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveRevision();}});
+ window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('markdownExportDialog').open){closeMargin();setNotesPanel(false);}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveRevision();}});
  window.addEventListener('beforeprint',()=>{preparePrint();});window.addEventListener('afterprint',()=>{$('printSheet').innerHTML='';});
  window.addEventListener('beforeunload',()=>{if(saveTimer)commitNote();});
 }
